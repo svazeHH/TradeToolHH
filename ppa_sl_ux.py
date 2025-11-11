@@ -548,9 +548,9 @@ def main():
                 st.markdown("### Expectations")
                 exp_col1, exp_col2 = st.columns(2)
                 with exp_col1:
-                    expected_lift = st.number_input("Lift (%)", 0.0, 30.0, step=5.0)
+                    expected_lift = st.number_input("Lift (%)", 0.0, step=5.0)
                 with exp_col2:
-                    expected_roi = st.number_input("ROI (%)", -100.0, 150.0, step=10.0,
+                    expected_roi = st.number_input("ROI (%)", -100.0, step=10.0,
                                                   help="Expected return on trade spend investment")
             
             st.markdown("---")
