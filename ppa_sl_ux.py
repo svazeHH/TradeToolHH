@@ -12,51 +12,64 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Enhanced CSS with proper color scheme and better UX
+# Modern sleek CSS with green color scheme
 st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    
     /* Global Styles */
+    * {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
     .stApp {
-        background-color: #ffffff;
+        background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
     }
     .main {
-        padding: 1rem 2rem;
-        background-color: #ffffff;
+        padding: 2rem 3rem;
     }
     
     /* Typography */
     h1 {
         color: #7cb342;
-        font-weight: 700;
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
+        font-weight: 800;
+        font-size: 3rem;
+        margin-bottom: 0.25rem;
+        letter-spacing: -0.02em;
+        background: linear-gradient(135deg, #7cb342 0%, #558b2f 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
     h2 {
-        color: #5a8c2f;
-        font-weight: 600;
-        font-size: 1.75rem;
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
+        color: #2c3e50;
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin: 2rem 0 1rem 0;
+        letter-spacing: -0.01em;
     }
     h3 {
         color: #7cb342;
         font-weight: 600;
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         margin-bottom: 0.75rem;
+        letter-spacing: -0.01em;
     }
     p, span, div, li {
-        color: #2c3e50;
+        color: #475569;
+        line-height: 1.6;
     }
     
     /* Sidebar */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
-        border-right: 2px solid #e0e0e0;
+        background: #ffffff;
+        border-right: 1px solid #e2e8f0;
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.03);
     }
     [data-testid="stSidebar"] h2 {
         color: #7cb342;
-        border-bottom: 3px solid #7cb342;
-        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #7cb342;
+        padding-bottom: 0.75rem;
+        font-size: 1.125rem;
     }
     
     /* Buttons */
@@ -64,16 +77,21 @@ st.markdown("""
         background: linear-gradient(135deg, #7cb342 0%, #689f38 100%);
         color: #ffffff;
         border: none;
-        border-radius: 8px;
+        border-radius: 12px;
         font-weight: 600;
-        padding: 0.75rem 2rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(124, 179, 66, 0.2);
+        font-size: 0.9375rem;
+        padding: 0.875rem 2rem;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 14px rgba(124, 179, 66, 0.25);
+        letter-spacing: 0.01em;
     }
     .stButton>button:hover {
-        background: linear-gradient(135deg, #689f38 0%, #5a8c2f 100%);
-        box-shadow: 0 6px 12px rgba(124, 179, 66, 0.3);
-        transform: translateY(-2px);
+        background: linear-gradient(135deg, #689f38 0%, #558b2f 100%);
+        box-shadow: 0 6px 20px rgba(124, 179, 66, 0.35);
+        transform: translateY(-1px);
+    }
+    .stButton>button:active {
+        transform: translateY(0);
     }
     
     /* Input Fields */
@@ -83,151 +101,198 @@ st.markdown("""
     .stSelectbox>div>div>div,
     .stMultiSelect>div>div>div {
         background-color: #ffffff !important;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-        color: #2c3e50;
-        padding: 0.5rem;
+        border: 1.5px solid #e2e8f0 !important;
+        border-radius: 10px !important;
+        color: #2c3e50 !important;
+        padding: 0.625rem 0.875rem !important;
+        font-size: 0.9375rem !important;
+        transition: all 0.2s ease;
     }
     .stTextInput>div>div>input:focus,
     .stNumberInput>div>div>input:focus,
     .stDateInput>div>div>input:focus {
-        border-color: #7cb342;
-        box-shadow: 0 0 0 2px rgba(124, 179, 66, 0.1);
+        border-color: #7cb342 !important;
+        box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.1) !important;
+        outline: none !important;
     }
     
     /* Dropdown menus */
     [data-baseweb="select"] > div,
     [data-baseweb="popover"] {
         background-color: #ffffff !important;
+        border-radius: 10px !important;
     }
     [data-baseweb="menu"] {
         background-color: #ffffff !important;
+        border-radius: 10px !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
     }
     ul[role="listbox"] {
         background-color: #ffffff !important;
+        padding: 0.5rem !important;
     }
     li[role="option"] {
         background-color: #ffffff !important;
         color: #2c3e50 !important;
+        border-radius: 6px !important;
+        margin: 2px 0 !important;
+        padding: 0.5rem 0.75rem !important;
     }
     li[role="option"]:hover {
-        background-color: #f8f9fa !important;
+        background-color: #f0f9ff !important;
     }
     
     /* Labels */
     label {
-        color: #5a8c2f !important;
+        color: #334155 !important;
         font-weight: 600 !important;
-        font-size: 0.95rem !important;
+        font-size: 0.875rem !important;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem !important;
     }
     
     /* Metrics */
     [data-testid="stMetricValue"] {
-        color: #2c3e50;
-        font-size: 2rem;
+        color: #1e293b;
+        font-size: 2.25rem;
         font-weight: 700;
+        letter-spacing: -0.02em;
     }
     [data-testid="stMetricLabel"] {
-        color: #5a8c2f;
+        color: #64748b;
         font-weight: 600;
-        font-size: 0.95rem;
+        font-size: 0.8125rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
     div[data-testid="stMetricDelta"] {
         color: #7cb342;
-    }
-    
-    /* Metric Cards */
-    .metric-container {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin: 0.5rem 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        font-weight: 600;
     }
     
     /* Period Cards */
     .period-card {
         background: #ffffff;
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        padding: 1.5rem;
+        border: none;
+        border-radius: 16px;
+        padding: 1.75rem;
         margin: 0.5rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    .period-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 4px;
+        transition: width 0.3s ease;
     }
     .period-card:hover {
-        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.06);
+        transform: translateY(-4px);
     }
-    .period-card.pre {
-        border-left: 5px solid #9e9e9e;
+    .period-card.pre::before {
+        background: linear-gradient(180deg, #9e9e9e 0%, #757575 100%);
     }
-    .period-card.during {
-        border-left: 5px solid #7cb342;
+    .period-card.during::before {
+        background: linear-gradient(180deg, #7cb342 0%, #689f38 100%);
     }
-    .period-card.post {
-        border-left: 5px solid #e57b8f;
+    .period-card.post::before {
+        background: linear-gradient(180deg, #e57b8f 0%, #d5536e 100%);
+    }
+    .period-card:hover::before {
+        width: 8px;
     }
     
     /* Info/Warning/Success boxes */
     .stAlert {
-        border-radius: 8px;
-        border-left: 5px solid;
+        border-radius: 12px;
+        border: none;
+        border-left: 4px solid;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
     
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 2rem;
-        border-bottom: 2px solid #e0e0e0;
+        gap: 0.5rem;
+        border-bottom: 2px solid #e2e8f0;
+        padding: 0 1rem;
     }
     .stTabs [data-baseweb="tab"] {
-        color: #9e9e9e;
+        color: #94a3b8;
         font-weight: 600;
+        font-size: 0.9375rem;
         padding: 1rem 1.5rem;
-        border-radius: 8px 8px 0 0;
+        border-radius: 10px 10px 0 0;
+        transition: all 0.2s ease;
     }
     .stTabs [aria-selected="true"] {
         color: #7cb342 !important;
-        background-color: #f8f9fa;
+        background: linear-gradient(180deg, rgba(124, 179, 66, 0.08) 0%, rgba(124, 179, 66, 0.02) 100%);
         border-bottom: 3px solid #7cb342 !important;
     }
     
     /* Expander */
     .streamlit-expanderHeader {
-        background-color: #f8f9fa;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 12px;
         color: #2c3e50;
         font-weight: 600;
+        padding: 1rem 1.25rem;
+        transition: all 0.2s ease;
     }
     .streamlit-expanderHeader:hover {
         border-color: #7cb342;
+        background: #f8fef5;
+        box-shadow: 0 2px 8px rgba(124, 179, 66, 0.1);
     }
     
     /* Text Area */
     .stTextArea textarea {
         background-color: #ffffff;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 12px;
         color: #2c3e50;
+        font-size: 0.9375rem;
+        padding: 0.875rem;
+        line-height: 1.6;
     }
     .stTextArea textarea:focus {
         border-color: #7cb342;
-        box-shadow: 0 0 0 2px rgba(124, 179, 66, 0.1);
+        box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.1);
+        outline: none;
     }
     
     /* Divider */
     hr {
-        border-top: 2px solid #e0e0e0;
-        margin: 2rem 0;
+        border: none;
+        border-top: 1px solid #e2e8f0;
+        margin: 2.5rem 0;
     }
     
-    /* Caption text */
-    .caption {
-        color: #757575;
-        font-size: 0.85rem;
-        font-style: italic;
+    /* File Uploader */
+    [data-testid="stFileUploader"] {
+        background: #ffffff;
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.2s ease;
+    }
+    [data-testid="stFileUploader"]:hover {
+        border-color: #7cb342;
+        background: #f8fef5;
+    }
+    
+    /* Success/Info Messages */
+    .stSuccess {
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+        border-left: 4px solid #7cb342 !important;
     }
     
     /* Hide Streamlit branding */
@@ -317,7 +382,7 @@ def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee,
     """Calculate lift and ROI metrics"""
     total_trade_spend = trade_spend + flat_fee
     
-    # Lift calculations (unchanged)
+    # Lift calculations
     during_lift_dollars = ((promo_sales - pre_sales) / pre_sales * 100) if pre_sales > 0 else 0
     post_lift_dollars = ((post_sales - pre_sales) / pre_sales * 100) if pre_sales > 0 else 0
     during_lift_units = ((promo_units - pre_units) / pre_units * 100) if pre_units > 0 else 0
@@ -325,7 +390,7 @@ def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee,
     
     # CORRECTED ROI calculation using profit
     incremental_sales = promo_sales - pre_sales
-    incremental_profit = incremental_sales * (1-(gross_margin_pct / 100))
+    incremental_profit = incremental_sales * (gross_margin_pct / 100)
     roi = ((incremental_profit - total_trade_spend) / total_trade_spend * 100) if total_trade_spend > 0 else 0
     
     return {
@@ -339,53 +404,87 @@ def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee,
     }
 
 def create_performance_chart(pre_sales, promo_sales, post_sales):
-    """Create bar chart"""
+    """Create modern bar chart"""
     fig = go.Figure(data=[
         go.Bar(
             x=['Pre-Promo', 'During Promo', 'Post-Promo'],
             y=[pre_sales, promo_sales, post_sales],
-            marker_color=['#bdbdbd', '#7cb342', '#e57b8f'],
+            marker=dict(
+                color=['#9e9e9e', '#7cb342', '#e57b8f'],
+                line=dict(color='rgba(255, 255, 255, 0)', width=0)
+            ),
             text=[f'${pre_sales:,.0f}', f'${promo_sales:,.0f}', f'${post_sales:,.0f}'],
             textposition='outside',
-            textfont=dict(size=14, color='#2c3e50')
+            textfont=dict(size=15, color='#2c3e50', family='Inter', weight=600)
         )
     ])
     
     fig.update_layout(
-        title={'text': 'Sales Performance', 'font': {'size': 18, 'color': '#5a8c2f'}},
+        title={
+            'text': 'Sales Performance',
+            'font': {'size': 20, 'color': '#2c3e50', 'family': 'Inter', 'weight': 700}
+        },
         yaxis_title='Sales ($)',
+        yaxis=dict(
+            gridcolor='#f1f5f9',
+            showline=False,
+            zeroline=False
+        ),
+        xaxis=dict(
+            showline=False,
+            showgrid=False
+        ),
         height=400,
         showlegend=False,
         template='plotly_white',
         plot_bgcolor='white',
         paper_bgcolor='white',
-        font=dict(color='#2c3e50')
+        font=dict(color='#475569', family='Inter'),
+        margin=dict(t=50, b=20, l=20, r=20)
     )
     return fig
 
 def create_lift_gauge(actual_lift, expected_lift):
-    """Create gauge chart"""
+    """Create modern gauge chart"""
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
         value=actual_lift,
-        delta={'reference': expected_lift, 'suffix': '%'},
-        title={'text': "Dollar Lift vs Expected", 'font': {'size': 16, 'color': '#5a8c2f'}},
+        delta={
+            'reference': expected_lift,
+            'suffix': '%',
+            'font': {'size': 18, 'family': 'Inter', 'weight': 600}
+        },
+        title={
+            'text': "Dollar Lift vs Expected",
+            'font': {'size': 18, 'color': '#2c3e50', 'family': 'Inter', 'weight': 600}
+        },
+        number={'font': {'size': 44, 'family': 'Inter', 'weight': 700}},
         gauge={
-            'axis': {'range': [None, max(actual_lift * 1.2, expected_lift * 1.5)]},
-            'bar': {'color': "#7cb342"},
+            'axis': {
+                'range': [None, max(actual_lift * 1.2, expected_lift * 1.5)],
+                'tickfont': {'size': 14, 'family': 'Inter'}
+            },
+            'bar': {'color': "#7cb342", 'thickness': 0.8},
+            'bgcolor': "#f8f9fa",
+            'borderwidth': 0,
             'steps': [
-                {'range': [0, expected_lift], 'color': "#f0f0f0"},
+                {'range': [0, expected_lift], 'color': "#f1f5f9"},
                 {'range': [expected_lift, expected_lift * 2], 'color': "#e8f5e9"}
             ],
             'threshold': {
-                'line': {'color': "#e57b8f", 'width': 4},
-                'thickness': 0.75,
+                'line': {'color': "#e57b8f", 'width': 5},
+                'thickness': 0.8,
                 'value': expected_lift
             }
         }
     ))
     
-    fig.update_layout(height=350, paper_bgcolor='white', font={'color': "#2c3e50"})
+    fig.update_layout(
+        height=350,
+        paper_bgcolor='white',
+        font={'color': "#2c3e50", 'family': 'Inter'},
+        margin=dict(t=50, b=20, l=20, r=20)
+    )
     return fig
 
 def export_to_excel(analyses):
@@ -443,11 +542,8 @@ def export_to_excel(analyses):
 
 def main():
     # Header
-    st.markdown("""
-        <h1 style='margin-left: 15px; color: #7cb342;'>Harmless Harvest Post-Promo Analysis</h1>
-    </div>
-    """, unsafe_allow_html=True)
-   
+    st.markdown("<h1>Harmless Harvest Post-Promo Analysis</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size: 1.125rem; color: #64748b; margin-top: -0.5rem;'>Trade spend performance analytics</p>", unsafe_allow_html=True)
     
     # Sidebar
     with st.sidebar:
@@ -464,22 +560,22 @@ def main():
                 with st.spinner("Loading..."):
                     st.session_state.weekly_data = load_weekly_data(uploaded_file)
                     if st.session_state.weekly_data is not None:
-                        st.success(f"✅ {len(st.session_state.weekly_data):,} rows")
+                        st.success(f"✅ {len(st.session_state.weekly_data):,} rows loaded")
             else:
-                st.success(f"✅ {len(st.session_state.weekly_data):,} rows")
-                if st.button("🔄 Reload"):
+                st.success(f"✅ {len(st.session_state.weekly_data):,} rows loaded")
+                if st.button("🔄 Reload Data", use_container_width=True):
                     st.session_state.weekly_data = load_weekly_data(uploaded_file)
                     st.rerun()
         
         st.markdown("---")
-        st.markdown("## 📊 Summary")
+        st.markdown("## 📊 Analysis Summary")
         st.metric("Total Analyses", len(st.session_state.promo_analyses))
         
         if st.session_state.promo_analyses:
-            if st.button("📥 Export", use_container_width=True):
+            if st.button("📥 Export All", use_container_width=True):
                 excel_data = export_to_excel(st.session_state.promo_analyses)
                 st.download_button(
-                    "⬇️ Download",
+                    "⬇️ Download Excel",
                     excel_data,
                     f"promo_analyses_{datetime.now().strftime('%Y%m%d')}.xlsx",
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -488,30 +584,34 @@ def main():
     
     # Main content
     if st.session_state.weekly_data is None:
-        st.info("👈 Upload your weekly sales data to begin")
+        st.info("👈 Upload your weekly sales data to begin analysis")
         
+        st.markdown("<br>", unsafe_allow_html=True)
         col1, col2, col3 = st.columns(3)
         with col1:
             st.markdown("""
-            <div style="text-align: center;">
-                <h3>📂 Upload</h3>
-                <p>Load shared syndicated sales data file</p>
+            <div style="text-align: center; padding: 2rem; background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📂</div>
+                <h3 style="margin-bottom: 0.5rem;">Upload Data</h3>
+                <p style="color: #64748b; font-size: 0.9375rem;">Load syndicated sales consumption file</p>
             </div>
-                """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
         with col2:
             st.markdown("""
-            <div style="text-align: center;">
-                <h3>🎯 Analyze</h3>
-                <p>Select product groups & in-store promo dates</p>
+            <div style="text-align: center; padding: 2rem; background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+                <h3 style="margin-bottom: 0.5rem;">Configure</h3>
+                <p style="color: #64748b; font-size: 0.9375rem;">Select products & promo dates</p>
             </div>
-                """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
         with col3:
             st.markdown("""
-            <div style="text-align: center;">
-                <h3>📊 Results</h3>
-                <p>View sales performance, lift & ROI</p>
+            <div style="text-align: center; padding: 2rem; background: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                <h3 style="margin-bottom: 0.5rem;">Analyze</h3>
+                <p style="color: #64748b; font-size: 0.9375rem;">View lift metrics & ROI</p>
             </div>
-                """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
     else:
         tab1, tab2 = st.tabs(["➕ New Analysis", "📋 All Analyses"])
         
@@ -520,48 +620,66 @@ def main():
             retailers = sorted(df['GEOGRAPHY'].dropna().unique())
             product_groups = sorted(df['Product Group'].dropna().unique())
             
-            st.markdown("## 🎯 Promotion Details")
+            st.markdown("## 🎯 Promotion Configuration")
             
             col1, col2 = st.columns([1, 1])
             
             with col1:
                 st.markdown("### Product & Retailer")
                 retailer = st.selectbox("Retailer", retailers)
-                product_group = st.multiselect("Product Group(s)", product_groups, help="Select one or more")
+                product_group = st.multiselect("Product Group(s)", product_groups, help="Select one or more product groups")
                 
                 st.markdown("### Timing")
                 date_col1, date_col2 = st.columns(2)
                 with date_col1:
-                    promo_start = st.date_input("Start")
+                    promo_start = st.date_input("Promo Start Date")
                 with date_col2:
-                    promo_end = st.date_input("End")
+                    promo_end = st.date_input("Promo End Date")
             
             with col2:
-                st.markdown("### Financial")
-                trade_spend = st.number_input("Item-Level Trade Spend ($)", 0.0, step=100.0, 
-                                             help="Total trade spend including discounts, off-invoice, scan-based allowances")
-                flat_fee = st.number_input("Additional Fees ($)", 0.0, step=100.0,
-                                          help="Slotting fees, display fees, co-op advertising, etc.")
-                gross_margin_pct = st.number_input("Gross Margin (%)", 0.0, 100.0, 30.0, step=5.0,
-                                                  help="Product gross margin = (Net Price - COGS) / Net Price × 100")
+                st.markdown("### Financial Inputs")
+                trade_spend = st.number_input(
+                    "Item-Level Trade Spend ($)",
+                    0.0,
+                    step=100.0,
+                    help="Total trade spend: discounts, off-invoice, scan-based allowances"
+                )
+                flat_fee = st.number_input(
+                    "Additional Fees ($)",
+                    0.0,
+                    step=100.0,
+                    help="Slotting fees, display fees, co-op advertising"
+                )
+                gross_margin_pct = st.number_input(
+                    "Gross Margin (%)",
+                    0.0,
+                    100.0,
+                    30.0,
+                    step=5.0,
+                    help="Gross margin = (Net Price - COGS) / Net Price × 100"
+                )
                 
-                st.markdown("### Expectations")
+                st.markdown("### Performance Expectations")
                 exp_col1, exp_col2 = st.columns(2)
                 with exp_col1:
-                    expected_lift = st.number_input("Lift (%)", 0.0, step=5.0)
+                    expected_lift = st.number_input("Expected Lift (%)", 0.0, step=5.0)
                 with exp_col2:
-                    expected_roi = st.number_input("ROI (%)", -100.0, step=10.0,
-                                                  help="Expected return on trade spend investment")
+                    expected_roi = st.number_input(
+                        "Expected ROI (%)",
+                        -100.0,
+                        step=10.0,
+                        help="Expected return on trade spend investment"
+                    )
             
             st.markdown("---")
             
-            if st.button("🔍 Calculate", type="primary", use_container_width=True):
+            if st.button("🔍 Run Analysis", type="primary", use_container_width=True):
                 if not product_group:
-                    st.error("⚠️ Select at least one product group")
+                    st.error("⚠️ Please select at least one product group")
                 elif promo_start >= promo_end:
                     st.error("⚠️ End date must be after start date")
                 else:
-                    with st.spinner("Analyzing..."):
+                    with st.spinner("Analyzing promotion performance..."):
                         periods = calculate_promo_periods(promo_start, promo_end)
                         
                         pre_sales, pre_units = get_period_sales(df, retailer, product_group, periods['pre_start'], periods['pre_end'], periods['promo_days'])
@@ -592,65 +710,76 @@ def main():
                         st.rerun()
             
             if st.session_state.current_analysis:
-                st.success("✅ Complete!")
+                st.success("✅ Analysis Complete")
                 st.markdown("---")
                 
                 a = st.session_state.current_analysis
                 
-                st.markdown("## 📊 Results")
+                st.markdown("## 📊 Performance Results")
                 
+                # Period comparison cards
                 col1, col2, col3 = st.columns(3)
                 
                 with col1:
-                    st.markdown(f"""<div class='period-card pre'><h3 style='color: #757575; margin:0;'>Pre-Promo</h3>
-                    <p style='color: #9e9e9e; font-size: 0.9rem;'>{a['periods']['pre_start'].strftime('%m/%d')} - {a['periods']['pre_end'].strftime('%m/%d')}</p></div>""", unsafe_allow_html=True)
+                    st.markdown(f"""<div class='period-card pre'>
+                    <h3 style='color: #64748b; margin:0; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;'>Pre-Promo Baseline</h3>
+                    <p style='color: #94a3b8; font-size: 0.875rem; margin: 0.25rem 0 1rem 0;'>{a['periods']['pre_start'].strftime('%b %d')} - {a['periods']['pre_end'].strftime('%b %d, %Y')}</p>
+                    </div>""", unsafe_allow_html=True)
                     st.metric("Sales", f"${a['pre_sales']:,.0f}")
-                    st.caption("Baseline")
+                    st.caption("Baseline performance")
                     st.metric("Units", f"{a['pre_units']:,.0f}")
                 
                 with col2:
-                    st.markdown(f"""<div class='period-card during'><h3 style='color: #7cb342; margin:0;'>During Promo</h3>
-                    <p style='color: #689f38; font-size: 0.9rem;'>{a['periods']['promo_start'].strftime('%m/%d')} - {a['periods']['promo_end'].strftime('%m/%d')}</p></div>""", unsafe_allow_html=True)
-                    st.metric("Sales", f"${a['promo_sales']:,.0f}")
-                    st.caption(f"Incr: ${a['promo_sales'] - a['pre_sales']:,.0f}")
+                    st.markdown(f"""<div class='period-card during'>
+                    <h3 style='color: #7cb342; margin:0; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;'>During Promotion</h3>
+                    <p style='color: #8bc34a; font-size: 0.875rem; margin: 0.25rem 0 1rem 0;'>{a['periods']['promo_start'].strftime('%b %d')} - {a['periods']['promo_end'].strftime('%b %d, %Y')}</p>
+                    </div>""", unsafe_allow_html=True)
+                    st.metric("Sales", f"${a['promo_sales']:,.0f}", delta=f"+${a['promo_sales'] - a['pre_sales']:,.0f}")
+                    st.caption(f"Incremental: ${a['promo_sales'] - a['pre_sales']:,.0f}")
                     st.metric("Units", f"{a['promo_units']:,.0f}")
                 
                 with col3:
-                    st.markdown(f"""<div class='period-card post'><h3 style='color: #e57b8f; margin:0;'>Post-Promo</h3>
-                    <p style='color: #e57b8f; font-size: 0.9rem;'>{a['periods']['post_start'].strftime('%m/%d')} - {a['periods']['post_end'].strftime('%m/%d')}</p></div>""", unsafe_allow_html=True)
-                    st.metric("Sales", f"${a['post_sales']:,.0f}")
-                    st.caption(f"Incr: ${a['post_sales'] - a['pre_sales']:,.0f}")
+                    st.markdown(f"""<div class='period-card post'>
+                    <h3 style='color: #e57b8f; margin:0; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;'>Post-Promo</h3>
+                    <p style='color: #f48ba7; font-size: 0.875rem; margin: 0.25rem 0 1rem 0;'>{a['periods']['post_start'].strftime('%b %d')} - {a['periods']['post_end'].strftime('%b %d, %Y')}</p>
+                    </div>""", unsafe_allow_html=True)
+                    st.metric("Sales", f"${a['post_sales']:,.0f}", delta=f"+${a['post_sales'] - a['pre_sales']:,.0f}")
+                    st.caption(f"Incremental: ${a['post_sales'] - a['pre_sales']:,.0f}")
                     st.metric("Units", f"{a['post_units']:,.0f}")
                 
                 st.markdown("---")
                 
+                # Metrics section
                 col1, col2 = st.columns([1, 1])
                 
                 with col1:
-                    st.markdown("### 📈 Lift")
-                    st.markdown("**Dollars**")
+                    st.markdown("### 📈 Lift Analysis")
+                    st.markdown("**Dollar Lift**")
                     during_diff = a['metrics']['during_lift_dollars'] - a['expected_lift']
-                    st.metric("During ($)", f"{a['metrics']['during_lift_dollars']:.1f}%", f"{during_diff:+.1f}%")
-                    st.metric("Post ($)", f"{a['metrics']['post_lift_dollars']:.1f}%")
+                    st.metric("During Promo", f"{a['metrics']['during_lift_dollars']:.1f}%", f"{during_diff:+.1f}%")
+                    st.metric("Post Promo", f"{a['metrics']['post_lift_dollars']:.1f}%")
                     
-                    st.markdown("**Units**")
-                    st.metric("During (Units)", f"{a['metrics']['during_lift_units']:.1f}%")
-                    st.metric("Post (Units)", f"{a['metrics']['post_lift_units']:.1f}%")
+                    st.markdown("**Unit Lift**")
+                    st.metric("During Promo", f"{a['metrics']['during_lift_units']:.1f}%")
+                    st.metric("Post Promo", f"{a['metrics']['post_lift_units']:.1f}%")
+                    
                     st.markdown("---")
-                    st.metric("Expected", f"{a['expected_lift']:.1f}%")
+                    st.metric("Expected Lift", f"{a['expected_lift']:.1f}%")
                 
                 with col2:
-                    st.markdown("### 💵 Trade Spend ROI")
+                    st.markdown("### 💵 Financial Performance")
                     roi_diff = a['metrics']['roi'] - a['expected_roi']
-                    st.metric("Actual", f"{a['metrics']['roi']:.1f}%", f"{roi_diff:+.1f}%")
-                    st.metric("Expected", f"{a['expected_roi']:.1f}%")
+                    st.metric("Actual ROI", f"{a['metrics']['roi']:.1f}%", f"{roi_diff:+.1f}%")
+                    st.metric("Expected ROI", f"{a['expected_roi']:.1f}%")
+                    
                     st.markdown("---")
-                    st.metric("Incremental Sales", f"${a['metrics']['incremental_sales']:,.0f}")
+                    st.metric("Incremental Revenue", f"${a['metrics']['incremental_sales']:,.0f}")
                     st.metric("Incremental Profit", f"${a['metrics']['incremental_profit']:,.0f}")
-                    st.caption(f"At {a['gross_margin_pct']:.0f}% margin")
+                    st.caption(f"Based on {a['gross_margin_pct']:.0f}% gross margin")
                 
                 st.markdown("---")
                 
+                # Charts
                 col1, col2 = st.columns(2)
                 with col1:
                     st.plotly_chart(create_performance_chart(a['pre_sales'], a['promo_sales'], a['post_sales']), use_container_width=True)
@@ -658,23 +787,30 @@ def main():
                     st.plotly_chart(create_lift_gauge(a['metrics']['during_lift_dollars'], a['expected_lift']), use_container_width=True)
                 
                 st.markdown("---")
-                st.markdown("### 📝 Notes")
-                notes = st.text_area("Document insights", height=150, placeholder="Key learnings, recommendations...")
                 
-                if st.button("💾 Save", type="primary", use_container_width=True):
+                # Notes section
+                st.markdown("### 📝 Analysis Notes")
+                notes = st.text_area(
+                    "Document key insights and recommendations",
+                    height=120,
+                    placeholder="e.g., Strong performance during promo but post-promo dip indicates forward buying..."
+                )
+                
+                if st.button("💾 Save Analysis", type="primary", use_container_width=True):
                     a['notes'] = notes
                     a['analysis_date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                     st.session_state.promo_analyses.append(a.copy())
                     st.session_state.current_analysis = None
-                    st.success("✅ Saved!")
+                    st.success("✅ Analysis saved successfully!")
                     st.rerun()
         
         with tab2:
-            st.markdown("## 📋 All Analyses")
+            st.markdown("## 📋 Saved Analyses")
             
             if not st.session_state.promo_analyses:
-                st.info("No analyses yet. Create one in the 'New Analysis' tab!")
+                st.info("No saved analyses yet. Create your first analysis in the 'New Analysis' tab!")
             else:
+                # Summary metrics
                 col1, col2, col3, col4 = st.columns(4)
                 
                 avg_lift = sum(a['metrics']['during_lift_dollars'] for a in st.session_state.promo_analyses) / len(st.session_state.promo_analyses)
@@ -683,48 +819,50 @@ def main():
                 total_incremental = sum(a['metrics']['incremental_sales'] for a in st.session_state.promo_analyses)
                 
                 with col1:
-                    st.metric("Avg Lift", f"{avg_lift:.1f}%")
+                    st.metric("Average Lift", f"{avg_lift:.1f}%")
                 with col2:
-                    st.metric("Avg ROI", f"{avg_roi:.1f}%")
+                    st.metric("Average ROI", f"{avg_roi:.1f}%")
                 with col3:
-                    st.metric("Total Spend", f"${total_spend:,.0f}")
+                    st.metric("Total Investment", f"${total_spend:,.0f}")
                 with col4:
-                    st.metric("Total Incr", f"${total_incremental:,.0f}")
+                    st.metric("Total Incremental", f"${total_incremental:,.0f}")
                 
                 st.markdown("---")
                 
+                # Individual analysis cards
                 for idx, a in enumerate(st.session_state.promo_analyses):
                     if isinstance(a['product_group'], list):
                         product_display = ', '.join(a['product_group'])
                     else:
                         product_display = str(a['product_group'])
                     
-                    with st.expander(f"**{a['retailer']}** - {product_display} ({a['periods']['promo_start'].strftime('%m/%d/%Y')} - {a['periods']['promo_end'].strftime('%m/%d/%Y')})"):
+                    with st.expander(f"**{a['retailer']}** • {product_display} • {a['periods']['promo_start'].strftime('%b %d')} - {a['periods']['promo_end'].strftime('%b %d, %Y')}"):
                         col1, col2, col3 = st.columns(3)
                         
                         with col1:
-                            st.markdown("**Pre**")
+                            st.markdown("**Pre-Promo**")
                             st.write(f"Sales: ${a['pre_sales']:,.0f}")
-                            st.caption("Baseline")
+                            st.caption("Baseline period")
                             st.write(f"Units: {a['pre_units']:,.0f}")
                         
                         with col2:
-                            st.markdown("**During**")
+                            st.markdown("**During Promo**")
                             st.write(f"Sales: ${a['promo_sales']:,.0f}")
-                            st.caption(f"Incr: ${a['promo_sales'] - a['pre_sales']:,.0f}")
+                            st.caption(f"Incremental: ${a['promo_sales'] - a['pre_sales']:,.0f}")
                             st.write(f"Units: {a['promo_units']:,.0f}")
                             st.write(f"Lift ($): {a['metrics']['during_lift_dollars']:.1f}%")
-                            st.write(f"Lift (U): {a['metrics']['during_lift_units']:.1f}%")
+                            st.write(f"Lift (Units): {a['metrics']['during_lift_units']:.1f}%")
                         
                         with col3:
-                            st.markdown("**Post**")
+                            st.markdown("**Post-Promo**")
                             st.write(f"Sales: ${a['post_sales']:,.0f}")
-                            st.caption(f"Incr: ${a['post_sales'] - a['pre_sales']:,.0f}")
+                            st.caption(f"Incremental: ${a['post_sales'] - a['pre_sales']:,.0f}")
                             st.write(f"Units: {a['post_units']:,.0f}")
                             st.write(f"Lift ($): {a['metrics']['post_lift_dollars']:.1f}%")
-                            st.write(f"Lift (U): {a['metrics']['post_lift_units']:.1f}%")
+                            st.write(f"Lift (Units): {a['metrics']['post_lift_units']:.1f}%")
                         
-                        st.markdown("**Performance**")
+                        st.markdown("---")
+                        st.markdown("**Financial Performance**")
                         perf_col1, perf_col2 = st.columns(2)
                         with perf_col1:
                             st.write(f"Gross Margin: {a['gross_margin_pct']:.0f}%")
@@ -736,10 +874,11 @@ def main():
                             st.write(f"Incremental Profit: ${a['metrics']['incremental_profit']:,.0f}")
                         
                         if a.get('notes'):
+                            st.markdown("---")
                             st.markdown("**Notes:**")
                             st.write(a['notes'])
                         
-                        if st.button(f"🗑️ Delete", key=f"del_{idx}"):
+                        if st.button(f"🗑️ Delete Analysis", key=f"del_{idx}"):
                             st.session_state.promo_analyses.pop(idx)
                             st.rerun()
 
