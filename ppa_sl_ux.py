@@ -313,17 +313,20 @@ def get_period_sales(df, retailer, product_groups, start_date, end_date, promo_d
     
     return total_dollars, total_units
 
-def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee, pre_units, promo_units, post_units):
+def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee, pre_units, promo_units, post_units, gross_margin_pct):
     """Calculate lift and ROI metrics"""
     total_trade_spend = trade_spend + flat_fee
     
+    # Lift calculations (unchanged)
     during_lift_dollars = ((promo_sales - pre_sales) / pre_sales * 100) if pre_sales > 0 else 0
     post_lift_dollars = ((post_sales - pre_sales) / pre_sales * 100) if pre_sales > 0 else 0
     during_lift_units = ((promo_units - pre_units) / pre_units * 100) if pre_units > 0 else 0
     post_lift_units = ((post_units - pre_units) / pre_units * 100) if pre_units > 0 else 0
     
+    # CORRECTED ROI calculation using profit
     incremental_sales = promo_sales - pre_sales
-    roi = (incremental_sales / total_trade_spend * 100) if total_trade_spend > 0 else 0
+    incremental_profit = incremental_sales * (gross_margin_pct / 100)
+    roi = ((incremental_profit - total_trade_spend) / total_trade_spend * 100) if total_trade_spend > 0 else 0
     
     return {
         'during_lift_dollars': during_lift_dollars,
@@ -331,6 +334,7 @@ def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee,
         'during_lift_units': during_lift_units,
         'post_lift_units': post_lift_units,
         'incremental_sales': incremental_sales,
+        'incremental_profit': incremental_profit,
         'roi': roi
     }
 
@@ -408,6 +412,8 @@ def export_to_excel(analyses):
                 'During Incr Dollars': analysis['promo_sales'] - analysis['pre_sales'],
                 'Post-Promo Sales': analysis['post_sales'],
                 'Post Incr Dollars': analysis['post_sales'] - analysis['pre_sales'],
+                'Gross Margin %': analysis['gross_margin_pct'],
+                'Incremental Profit': analysis['metrics']['incremental_profit'],
                 'Trade Spend': analysis['trade_spend'],
                 'Flat Fee': analysis['flat_fee'],
                 'Total Spend': analysis['trade_spend'] + analysis['flat_fee'],
@@ -532,15 +538,20 @@ def main():
             
             with col2:
                 st.markdown("### Financial")
-                trade_spend = st.number_input("Item-Level Trade Spend ($)", 0.0, step=100.0)
-                flat_fee = st.number_input("Additional Fees ($)", 0.0, step=100.0)
+                trade_spend = st.number_input("Item-Level Trade Spend ($)", 0.0, step=100.0, 
+                                             help="Total trade spend including discounts, off-invoice, scan-based allowances")
+                flat_fee = st.number_input("Additional Fees ($)", 0.0, step=100.0,
+                                          help="Slotting fees, display fees, co-op advertising, etc.")
+                gross_margin_pct = st.number_input("Gross Margin (%)", 0.0, 100.0, 30.0, step=5.0,
+                                                  help="Product gross margin = (Net Price - COGS) / Net Price × 100")
                 
                 st.markdown("### Expectations")
                 exp_col1, exp_col2 = st.columns(2)
                 with exp_col1:
                     expected_lift = st.number_input("Lift (%)", 0.0, 30.0, step=5.0)
                 with exp_col2:
-                    expected_roi = st.number_input("ROI (%)", 0.0, 150.0, step=10.0)
+                    expected_roi = st.number_input("ROI (%)", -100.0, 150.0, step=10.0,
+                                                  help="Expected return on trade spend investment")
             
             st.markdown("---")
             
@@ -557,7 +568,7 @@ def main():
                         promo_sales, promo_units = get_period_sales(df, retailer, product_group, periods['promo_start'], periods['promo_end'], periods['promo_days'])
                         post_sales, post_units = get_period_sales(df, retailer, product_group, periods['post_start'], periods['post_end'], periods['promo_days'])
                         
-                        metrics = calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee, pre_units, promo_units, post_units)
+                        metrics = calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee, pre_units, promo_units, post_units, gross_margin_pct)
                         product_group_display = ', '.join(product_group) if isinstance(product_group, list) else product_group
                         
                         st.session_state.current_analysis = {
@@ -573,6 +584,7 @@ def main():
                             'post_units': post_units,
                             'trade_spend': trade_spend,
                             'flat_fee': flat_fee,
+                            'gross_margin_pct': gross_margin_pct,
                             'expected_lift': expected_lift,
                             'expected_roi': expected_roi,
                             'metrics': metrics
@@ -628,11 +640,14 @@ def main():
                     st.metric("Expected", f"{a['expected_lift']:.1f}%")
                 
                 with col2:
-                    st.markdown("### 💵 ROI")
+                    st.markdown("### 💵 Trade Spend ROI")
                     roi_diff = a['metrics']['roi'] - a['expected_roi']
                     st.metric("Actual", f"{a['metrics']['roi']:.1f}%", f"{roi_diff:+.1f}%")
                     st.metric("Expected", f"{a['expected_roi']:.1f}%")
-                    st.metric("Incremental", f"${a['metrics']['incremental_sales']:,.0f}")
+                    st.markdown("---")
+                    st.metric("Incremental Sales", f"${a['metrics']['incremental_sales']:,.0f}")
+                    st.metric("Incremental Profit", f"${a['metrics']['incremental_profit']:,.0f}")
+                    st.caption(f"At {a['gross_margin_pct']:.0f}% margin")
                 
                 st.markdown("---")
                 
@@ -712,11 +727,13 @@ def main():
                         st.markdown("**Performance**")
                         perf_col1, perf_col2 = st.columns(2)
                         with perf_col1:
+                            st.write(f"Gross Margin: {a['gross_margin_pct']:.0f}%")
                             st.write(f"Expected Lift: {a['expected_lift']:.1f}%")
                             st.write(f"Expected ROI: {a['expected_roi']:.1f}%")
                         with perf_col2:
                             st.write(f"Actual ROI: {a['metrics']['roi']:.1f}%")
-                            st.write(f"Incremental: ${a['metrics']['incremental_sales']:,.0f}")
+                            st.write(f"Incremental Sales: ${a['metrics']['incremental_sales']:,.0f}")
+                            st.write(f"Incremental Profit: ${a['metrics']['incremental_profit']:,.0f}")
                         
                         if a.get('notes'):
                             st.markdown("**Notes:**")
