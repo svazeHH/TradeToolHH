@@ -325,7 +325,7 @@ def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee,
     
     # CORRECTED ROI calculation using profit
     incremental_sales = promo_sales - pre_sales
-    incremental_profit = incremental_sales * (gross_margin_pct / 100)
+    incremental_profit = incremental_sales * (1-(gross_margin_pct / 100))
     roi = ((incremental_profit - total_trade_spend) / total_trade_spend * 100) if total_trade_spend > 0 else 0
     
     return {
