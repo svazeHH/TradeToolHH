@@ -438,8 +438,6 @@ def export_to_excel(analyses):
 def main():
     # Header
     st.markdown("""
-    <div style='display: flex; align-items: center;'>
-        <img src='harmless_harvest_logo.png' width='90'>
         <h1 style='margin-left: 15px; color: #7cb342;'>Harmless Harvest Post-Promo Analysis</h1>
     </div>
     """, unsafe_allow_html=True)
