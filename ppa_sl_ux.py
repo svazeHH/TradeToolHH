@@ -486,7 +486,7 @@ def main():
         
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.markdown("### 📂 Upload")
+            st.markdown("<h3 style='text-align: center;### 📂 Upload")
             st.markdown("Load shared syndicated sales data file")
         with col2:
             st.markdown("### 🎯 Analyze")
