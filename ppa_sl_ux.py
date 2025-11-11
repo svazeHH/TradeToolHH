@@ -437,7 +437,12 @@ def export_to_excel(analyses):
 
 def main():
     # Header
-    st.markdown("<h1 style='text-align: center;'>📊 Post-Promo Analysis</h1>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style='display: flex; align-items: center;'>
+        <img src='harmless_harvest_logo.png' width='90'>
+        <h1 style='margin-left: 15px; color: #7cb342;'>Harmless Harvest Post-Promo Analysis</h1>
+    </div>
+    """, unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; color: #757575; font-size: 1.1rem;'>Analyze promotional performance with precision</p>", unsafe_allow_html=True)
     st.markdown("---")
     
