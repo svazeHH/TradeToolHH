@@ -486,14 +486,26 @@ def main():
         
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.markdown("<h3 style='text-align: center;### 📂 Upload")
-            st.markdown("Load shared syndicated sales data file")
+            st.markdown("""
+            <div style="text-align: center;">
+                <h3>📂 Upload</h3>
+                <p>Load shared syndicated sales data file</p>
+            </div>
+                """, unsafe_allow_html=True)
         with col2:
-            st.markdown("### 🎯 Analyze")
-            st.markdown("Select product groups & in-store promo dates")
+            st.markdown("""
+            <div style="text-align: center;">
+                <h3>🎯 Analyze</h3>
+                <p>Select product groups & in-store promo dates</p>
+            </div>
+                """, unsafe_allow_html=True)
         with col3:
-            st.markdown("### 📊 Results")
-            st.markdown("View sales performance, lift & ROI")
+            st.markdown("""
+            <div style="text-align: center;">
+                <h3>📊 Results</h3>
+                <p>View sales performance, lift & ROI</p>
+            </div>
+                """, unsafe_allow_html=True)
     else:
         tab1, tab2 = st.tabs(["➕ New Analysis", "📋 All Analyses"])
         
