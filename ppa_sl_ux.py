@@ -6,7 +6,7 @@ from io import BytesIO
 
 # Page configuration
 st.set_page_config(
-    page_title="Post-Promo Analysis",
+    page_title="Harmless Harvest Post-Promo Analysis",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
