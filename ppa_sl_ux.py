@@ -451,7 +451,7 @@ def main():
     
     # Sidebar
     with st.sidebar:
-        st.markdown("## 📁 Data Management")
+        st.markdown("## 📁 Sales Consumption Data")
         
         uploaded_file = st.file_uploader(
             "Upload Weekly Sales Data",
