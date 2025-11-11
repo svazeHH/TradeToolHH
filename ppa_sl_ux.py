@@ -487,13 +487,13 @@ def main():
         col1, col2, col3 = st.columns(3)
         with col1:
             st.markdown("### 📂 Upload")
-            st.markdown("Load syndicated sales data")
+            st.markdown("Load shared syndicated sales data file")
         with col2:
             st.markdown("### 🎯 Analyze")
-            st.markdown("Select products & dates")
+            st.markdown("Select product groups & in-store promo dates")
         with col3:
             st.markdown("### 📊 Results")
-            st.markdown("View lift & ROI")
+            st.markdown("View sales performance, lift & ROI")
     else:
         tab1, tab2 = st.tabs(["➕ New Analysis", "📋 All Analyses"])
         
