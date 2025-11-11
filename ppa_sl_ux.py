@@ -520,7 +520,7 @@ def main():
             
             with col2:
                 st.markdown("### Financial")
-                trade_spend = st.number_input("Product Trade Spend ($)", 0.0, step=100.0)
+                trade_spend = st.number_input("Item-Level Trade Spend ($)", 0.0, step=100.0)
                 flat_fee = st.number_input("Additional Fees ($)", 0.0, step=100.0)
                 
                 st.markdown("### Expectations")
