@@ -4,306 +4,6 @@ import plotly.graph_objects as go
 from datetime import datetime, timedelta
 from io import BytesIO
 
-# ============================================================================
-# EDLP RATE CONFIGURATION - Permanent rates by retailer and product group
-# ============================================================================
-# To add or update EDLP rates:
-# 1. Add retailer name as key (must match GEOGRAPHY column in data)
-# 2. Add product groups as nested dict (must match Product Group column)
-# 3. Set rate as dollar amount per unit (e.g., 0.40 = $0.40 per unit)
-#
-# Example: If Publix pays $0.40 EDLP on every 32oz Core unit sold:
-#   'Publix': {'32oz Core': 0.40}
-#
-# Rates are automatically applied to all units sold during promo period
-# ============================================================================
-
-EDLP_RATES = {
-    "APP": {
-        '10oz/12pk Original CCW': 0.36,
-        '16oz/12pk CCW': 0.45,
-        '24oz/6pk Traditional PBY': 0.72,
-        '32oz/6pk CCW': 0.89,
-        '4.4oz/8pk Traditional PBY': 0.21,
-    },
-    "AWG": {
-        '16oz/6pk CCW': 0.46,
-    },
-    "Ahold - Food Lion": {
-        '16oz/6pk CCW': 0.17,
-        '32oz/6pk CCW': 0.52,
-    },
-    "Ahold - Giant Carlisle": {
-        '24oz/6pk Traditional PBY': 0.62,
-    },
-    "Alb/Sfy - IM": {
-        '16oz/12pk CCW': 0.40,
-        '32oz/6pk CCW': 0.80,
-    },
-    "Alb/Sfy - MA (Acme & Eastern)": {
-        '10oz/12pk Original CCW': 0.25,
-        '12oz/4pk CCW': 1.05,
-    },
-    "Alb/Sfy - Portland": {
-        '16oz/12pk CCW': 0.46,
-    },
-    "Alb/Sfy - SW": {
-        '16oz/12pk CCW': 0.35,
-        '32oz/6pk CCW': 0.70,
-    },
-    "Alb/Sfy - Seattle": {
-        '10oz/12pk Original CCW': 0.22,
-        '16oz/12pk CCW': 0.36,
-        '16oz/6pk CCW': 0.36,
-        '32oz/6pk CCW': 0.70,
-        '32oz/6pk Smoothie': 0.70,
-    },
-    "Alb/Sfy - Shaws": {
-        '16oz/12pk CCW': 0.20,
-        '32oz/6pk CCW': 0.72,
-    },
-    "Alb/Sfy - SoCal": {
-        '10oz/12pk Original CCW': 0.15,
-        '16oz/12pk CCW': 0.17,
-        '16oz/6pk CCW': 0.17,
-        '32oz/6pk CCW': 0.32,
-    },
-    "Alb/Sfy - Southern": {
-        '10oz/6pk Smoothie': 0.22,
-        '16oz/12pk CCW': 0.36,
-        '16oz/6pk CCW': 0.36,
-        '32oz/6pk CCW': 0.66,
-    },
-    "Alder": {
-        '16oz/12pk CCW': 0.80,
-        '32oz/6pk CCW': 1.60,
-    },
-    "Atlantic Beverage Distributors": {
-        '16oz/6pk CCW': 1.07,
-    },
-    "BJs Wholesale": {
-        '10oz/6pk CCW': 0.69,
-    },
-    "Big Y": {
-        '16oz/12pk CCW': 0.16,
-        '32oz/6pk CCW': 0.32,
-    },
-    "Catapult": {
-        '10oz/12pk Original CCW': 0.26,
-        '10oz/6pk Smoothie': 0.26,
-        '16oz/12pk CCW': 0.33,
-        '16oz/6pk CCW': 0.33,
-        '32oz/6pk CCW': 0.60,
-    },
-    "Chevron ExtraMile": {
-        '16oz/12pk CCW': 0.21,
-        '16oz/6pk CCW': 0.21,
-    },
-    "Citarella": {
-        '16oz/12pk CCW': 0.22,
-        '32oz/6pk CCW': 0.45,
-    },
-    "Cub Foods": {
-        '16oz/12pk CCW': 0.10,
-        '16oz/6pk CCW': 0.10,
-        '32oz/6pk CCW': 1.21,
-    },
-    "DP Distribution East": {
-        '10oz/12pk Original CCW': 0.36,
-        '10oz/6pk Smoothie': 0.36,
-        '16oz/12pk CCW': 0.45,
-        '24oz/6pk Traditional PBY': 0.72,
-        '32oz/6pk CCW': 0.89,
-        '4.4oz/8pk Traditional PBY': 0.21,
-    },
-    "Demoulas": {
-        '16oz/12pk CCW': 0.39,
-        '32oz/6pk CCW': 0.86,
-    },
-    "Dot Foods, Inc.": {
-        '10oz/12pk Original CCW': 0.11,
-        '10oz/6pk Smoothie': 0.11,
-        '16oz/12pk CCW': 0.14,
-        '16oz/6pk CCW': 0.15,
-        '24oz/6pk Drinkable PBY': 0.18,
-        '24oz/6pk R&C PBY': 0.21,
-        '24oz/6pk Traditional PBY': 0.20,
-        '32oz/6pk CCW': 0.29,
-        '4.4oz/8pk Traditional PBY': 0.05,
-    },
-    "Earthly Gourmet": {
-        '24oz/6pk R&C PBY': 0.45,
-    },
-    "Fresh Direct": {
-        '10oz/12pk Original CCW': 0.10,
-        '10oz/6pk Smoothie': 0.12,
-        '12oz/6pk Original CCW': 0.29,
-        '16oz/12pk CCW': 0.18,
-        '16oz/6pk CCW': 0.18,
-        '24oz/6pk Traditional PBY': 0.42,
-        '32oz/6pk CCW': 0.36,
-        '4.4oz/8pk Traditional PBY': 0.12,
-        '8.75oz/12pk Original CCW': 0.90,
-    },
-    "Gelsons": {
-        '10oz/12pk Original CCW': 0.06,
-        '10oz/6pk Smoothie': 0.03,
-        '16oz/12pk CCW': 0.11,
-        '16oz/6pk CCW': 0.11,
-        '24oz/6pk Traditional PBY': 0.06,
-        '32oz/6pk CCW': 0.32,
-        '4.4oz/8pk Traditional PBY': 0.05,
-    },
-    "H Mart": {
-        '16oz/6pk CCW': 0.25,
-        '32oz/6pk CCW': 0.55,
-    },
-    "H-E-B": {
-        '16oz/12pk CCW': 0.35,
-        '16oz/6pk CCW': 0.35,
-        '32oz/6pk CCW': 0.82,
-    },
-    "Hungry Root": {
-        '12oz/6pk Original CCW': 0.35,
-        '16oz/12pk CCW': 0.61,
-        '24oz/6pk Traditional PBY': 0.50,
-        '4.4oz/8pk Traditional PBY': 0.15,
-    },
-    "L.A. Distributing Co.": {
-        '10oz/12pk Original CCW': 0.24,
-        '10oz/6pk Smoothie': 0.31,
-        '16oz/12pk CCW': 0.30,
-        '16oz/6pk CCW': 0.39,
-        '32oz/6pk CCW': 0.60,
-    },
-    "Misfits": {
-        '10oz/6pk Smoothie': 0.13,
-        '16oz/12pk CCW': 0.33,
-        '16oz/6pk CCW': 0.33,
-        '24oz/6pk Traditional PBY': 0.48,
-        '4.4oz/8pk Traditional PBY': 0.14,
-    },
-    "Morris Distributing": {
-        '10oz/12pk Original CCW': 0.29,
-        '10oz/6pk Smoothie': 0.29,
-        '12oz/6pk Original CCW': 0.26,
-        '16oz/6pk CCW': 0.37,
-    },
-    "Mother's Market": {
-        '16oz/12pk CCW': 0.26,
-        '32oz/6pk CCW': 0.52,
-    },
-    "Nugget": {
-        '24oz/6pk Traditional PBY': 0.60,
-        '4.4oz/8pk Traditional PBY': 0.20,
-    },
-    "Publix Supermarkets": {
-        '16oz/6pk CCW': 0.18,
-        '32oz/6pk CCW': 0.65,
-        '32oz/6pk Smoothie': 0.69,
-    },
-    "Rainforest Distributing": {
-        '10oz/12pk Original CCW': 0.24,
-        '10oz/6pk Smoothie': 0.24,
-        '16oz/12pk CCW': 0.30,
-        '16oz/6pk CCW': 0.30,
-        '24oz/6pk Drinkable PBY': 0.48,
-        '24oz/6pk R&C PBY': 0.55,
-        '24oz/6pk Traditional PBY': 0.48,
-        '32oz/6pk CCW': 0.60,
-        '4.4oz/8pk R&C PBY': 0.17,
-        '4.4oz/8pk Traditional PBY': 0.14,
-    },
-    "Raley's": {
-        '24oz/6pk Traditional PBY': 0.45,
-    },
-    "Roche Brothers": {
-        '10oz/12pk Original CCW': 0.23,
-        '16oz/12pk CCW': 0.33,
-        '16oz/6pk CCW': 0.33,
-        '32oz/6pk CCW': 0.40,
-    },
-    "Seacoast Distribution": {
-        '10oz/12pk Original CCW': 0.31,
-        '10oz/6pk Smoothie': 0.31,
-        '12oz/4pk CCW': 1.16,
-        '16oz/12pk CCW': 0.38,
-        '16oz/6pk CCW': 0.39,
-        '24oz/6pk Drinkable PBY': 0.63,
-        '24oz/6pk Traditional PBY': 0.63,
-        '32oz/6pk CCW': 0.77,
-        '4.4oz/8pk Traditional PBY': 0.18,
-    },
-    "Set Sail International": {
-        '10oz/6pk Smoothie': 0.36,
-        '16oz/12pk CCW': 0.45,
-        '16oz/6pk CCW': 0.45,
-        '32oz/6pk CCW': 0.89,
-    },
-    "Smart & Final": {
-        '16oz/12pk CCW': 0.30,
-        '16oz/6pk CCW': 0.30,
-    },
-    "Southeastern Grocers": {
-        '16oz/12pk CCW': 0.30,
-        '16oz/6pk CCW': 0.30,
-        '32oz/6pk CCW': 0.60,
-    },
-    "Sprouts Farmers Market": {
-        '10oz/12pk Original CCW': 0.02,
-        '10oz/6pk Smoothie': 0.40,
-        '16oz/6pk CCW': 0.38,
-        '24oz/6pk Traditional PBY': 0.65,
-        '32oz/6pk CCW': 0.06,
-        '4.4oz/8pk Traditional PBY': 0.01,
-    },
-    "Stater Bros": {
-        '16oz/12pk CCW': 0.35,
-        '16oz/6pk CCW': 0.35,
-        '32oz/6pk CCW': 0.70,
-    },
-    "Target Corp.": {
-        '12oz/4pk CCW': 0.47,
-    },
-    "The Kroger Co": {
-        '24oz/6pk Traditional PBY': 0.55,
-    },
-    "Thrive Market": {
-        '16oz/12pk CCW': 0.47,
-        '16oz/6pk CCW': 0.47,
-        '24oz/6pk Traditional PBY': 0.76,
-        '32oz/6pk CCW': 0.95,
-    },
-    "WFM National": {
-        '24oz/6pk Drinkable PBY': 0.42,
-    },
-    "Wakefern": {
-        '10oz/12pk Original CCW': 0.10,
-        '24oz/6pk Traditional PBY': 0.65,
-        '32oz/6pk CCW': 0.36,
-        '4.4oz/8pk Traditional PBY': 0.12,
-    },
-    "Walmart": {
-        '16oz/6pk CCW': 0.51,
-        '32oz/6pk CCW': 0.72,
-    },
-    "Wegman's": {
-        '10oz/6pk Smoothie': 0.36,
-        '16oz/12pk CCW': 0.38,
-        '16oz/6pk CCW': 0.38,
-        '32oz/6pk CCW': 0.72,
-    },
-    "Winco": {
-        '16oz/12pk CCW': 0.34,
-        '32oz/6pk CCW': 0.55,
-    },
-    "igourmet - Mountain Top": {
-        '24oz/6pk Traditional PBY': 2.18,
-        '4.4oz/8pk Traditional PBY': 0.50,
-    },
-}
-# ============================================================================
-
 # Page configuration
 st.set_page_config(
     page_title="Harmless Harvest Post-Promo Analysis",
@@ -601,40 +301,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Hardcoded P&L data by retailer and product group
-PL_DATA = {
-    ('Whole Foods', 'Coconut Water'): {'net_price': 4.50, 'cogs': 2.70},
-    ('Whole Foods', 'Smoothies'): {'net_price': 5.25, 'cogs': 3.15},
-    ('Target', 'Coconut Water'): {'net_price': 4.25, 'cogs': 2.55},
-    ('Target', 'Smoothies'): {'net_price': 4.99, 'cogs': 2.99},
-    ('Kroger', 'Coconut Water'): {'net_price': 4.00, 'cogs': 2.40},
-    ('Kroger', 'Smoothies'): {'net_price': 4.75, 'cogs': 2.85},
-    # Add more retailer-product combinations as needed
-}
-
-# Default P&L for retailers/products not in the lookup
-DEFAULT_PL = {'net_price': 4.50, 'cogs': 2.70}  # Represents company average
-
-def get_pl_data(retailer, product_groups):
-    """Get P&L data for retailer and product(s). Returns weighted average for multiple products."""
-    if isinstance(product_groups, str):
-        product_groups = [product_groups]
-    
-    net_prices = []
-    cogs_list = []
-    
-    for product in product_groups:
-        key = (retailer, product)
-        pl = PL_DATA.get(key, DEFAULT_PL)
-        net_prices.append(pl['net_price'])
-        cogs_list.append(pl['cogs'])
-    
-    # Return average if multiple products selected
-    avg_net_price = sum(net_prices) / len(net_prices)
-    avg_cogs = sum(cogs_list) / len(cogs_list)
-    
-    return avg_net_price, avg_cogs
-
 # Initialize session state
 if 'weekly_data' not in st.session_state:
     st.session_state.weekly_data = None
@@ -712,33 +378,9 @@ def get_period_sales(df, retailer, product_groups, start_date, end_date, promo_d
     
     return total_dollars, total_units
 
-def calculate_edlp_spend(retailer, product_groups, units):
-    """Calculate EDLP spend based on hardcoded rates"""
-    if isinstance(product_groups, str):
-        product_groups = [product_groups]
-    
-    total_edlp = 0
-    
-    # Check if retailer has any EDLP rates configured
-    if retailer in EDLP_RATES:
-        for product_group in product_groups:
-            # Check if this specific product group has an EDLP rate
-            if product_group in EDLP_RATES[retailer]:
-                rate_per_unit = EDLP_RATES[retailer][product_group]
-                total_edlp += units * rate_per_unit
-    
-    return total_edlp
-
-def get_edlp_rate(retailer, product_group):
-    """Get EDLP rate for a specific retailer/product combination"""
-    if retailer in EDLP_RATES:
-        if product_group in EDLP_RATES[retailer]:
-            return EDLP_RATES[retailer][product_group]
-    return 0.0
-
-def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee, pre_units, promo_units, post_units, net_price, cogs, edlp_spend):
-    """Calculate lift and ROI metrics using actual unit economics"""
-    total_trade_spend = trade_spend + flat_fee + edlp_spend
+def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee, pre_units, promo_units, post_units, gross_margin_pct):
+    """Calculate lift and ROI metrics"""
+    total_trade_spend = trade_spend + flat_fee
     
     # Lift calculations
     during_lift_dollars = ((promo_sales - pre_sales) / pre_sales * 100) if pre_sales > 0 else 0
@@ -746,16 +388,9 @@ def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee,
     during_lift_units = ((promo_units - pre_units) / pre_units * 100) if pre_units > 0 else 0
     post_lift_units = ((post_units - pre_units) / pre_units * 100) if pre_units > 0 else 0
     
-    # Unit economics
-    profit_per_unit = net_price - cogs
-    gross_margin_pct = ((net_price - cogs) / net_price * 100) if net_price > 0 else 0
-    
-    # Incremental profit calculation
-    incremental_units = promo_units - pre_units
-    incremental_profit = incremental_units * profit_per_unit
+    # CORRECTED ROI calculation using profit
     incremental_sales = promo_sales - pre_sales
-    
-    # ROI = (Incremental Profit - Trade Spend) / Trade Spend
+    incremental_profit = incremental_sales * (gross_margin_pct / 100)
     roi = ((incremental_profit - total_trade_spend) / total_trade_spend * 100) if total_trade_spend > 0 else 0
     
     return {
@@ -764,12 +399,8 @@ def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee,
         'during_lift_units': during_lift_units,
         'post_lift_units': post_lift_units,
         'incremental_sales': incremental_sales,
-        'incremental_units': incremental_units,
         'incremental_profit': incremental_profit,
-        'profit_per_unit': profit_per_unit,
-        'gross_margin_pct': gross_margin_pct,
-        'roi': roi,
-        'edlp_spend': edlp_spend
+        'roi': roi
     }
 
 def create_performance_chart(pre_sales, promo_sales, post_sales):
@@ -880,11 +511,8 @@ def export_to_excel(analyses):
                 'During Incr Dollars': analysis['promo_sales'] - analysis['pre_sales'],
                 'Post-Promo Sales': analysis['post_sales'],
                 'Post Incr Dollars': analysis['post_sales'] - analysis['pre_sales'],
-                'Net Price': analysis['net_price'],
-                'COGS': analysis['cogs'],
                 'Gross Margin %': analysis['gross_margin_pct'],
                 'Incremental Profit': analysis['metrics']['incremental_profit'],
-                'EDLP Spend': analysis['metrics']['edlp_spend'],
                 'Trade Spend': analysis['trade_spend'],
                 'Flat Fee': analysis['flat_fee'],
                 'Total Spend': analysis['trade_spend'] + analysis['flat_fee'],
@@ -938,20 +566,6 @@ def main():
                 if st.button("🔄 Reload Data", use_container_width=True):
                     st.session_state.weekly_data = load_weekly_data(uploaded_file)
                     st.rerun()
-        
-        st.markdown("---")
-        st.markdown("## ⚙️ EDLP Rates")
-        
-        with st.expander("View Configured EDLP Rates", expanded=False):
-            st.caption("Everyday low price discount rates applied per unit sold")
-            
-            if EDLP_RATES:
-                for retailer, products in EDLP_RATES.items():
-                    st.markdown(f"**{retailer}:**")
-                    for product, rate in products.items():
-                        st.write(f"  • {product}: ${rate:.2f}/unit")
-            else:
-                st.info("No EDLP rates configured")
         
         st.markdown("---")
         st.markdown("## 📊 Analysis Summary")
@@ -1028,18 +642,8 @@ def main():
                     "Item-Level Trade Spend ($)",
                     0.0,
                     step=100.0,
-                    help="Total promotional trade spend: discounts, off-invoice, scan-based allowances (EDLP rates auto-applied from sidebar config)"
+                    help="Total trade spend: discounts, off-invoice, scan-based allowances"
                 )
-                
-                # Show EDLP info if configured
-                if retailer and product_group:
-                    edlp_info = []
-                    for pg in product_group:
-                        rate = get_edlp_rate(retailer, pg)
-                        if rate > 0:
-                            edlp_info.append(f"{pg}: ${rate:.2f}/unit")
-                    if edlp_info:
-                        st.info(f"💡 **EDLP rates configured:**\n\n" + "\n\n".join(edlp_info) + "\n\n*Applied automatically to all units sold*")
                 flat_fee = st.number_input(
                     "Additional Fees ($)",
                     0.0,
@@ -1171,12 +775,7 @@ def main():
                     st.markdown("---")
                     st.metric("Incremental Revenue", f"${a['metrics']['incremental_sales']:,.0f}")
                     st.metric("Incremental Profit", f"${a['metrics']['incremental_profit']:,.0f}")
-                    st.caption(f"Based on ${a['net_price']:.2f} net price - ${a['cogs']:.2f} COGS")
-                    
-                    if a['metrics']['edlp_spend'] > 0:
-                        st.markdown("---")
-                        st.metric("EDLP Spend", f"${a['metrics']['edlp_spend']:,.0f}")
-                        st.caption("Included in total trade spend")
+                    st.caption(f"Based on {a['gross_margin_pct']:.0f}% gross margin")
                 
                 st.markdown("---")
                 
