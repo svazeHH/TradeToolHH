@@ -283,7 +283,7 @@ EDLP_RATES = {
         '32oz/6pk CCW': 0.36,
         '4.4oz/8pk Traditional PBY': 0.12,
     },
-    "Walmart": {
+    "WALMART CORP - RMA": {
         '16oz/6pk CCW': 0.51,
         '32oz/6pk CCW': 0.72,
     },
