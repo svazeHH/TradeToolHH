@@ -198,7 +198,7 @@ EDLP_RATES = {
         '4.4oz/8pk Traditional PBY': 0.20,
     },
     "PUBLIX CORP - RMA": {
-        '16oz Core CCW': 0.18,
+        '16oz Core': 0.18,
         '32oz Core': 0.65,
         '32oz/6pk Innovation': 0.69,
     },
