@@ -197,10 +197,10 @@ EDLP_RATES = {
         '24oz/6pk Traditional PBY': 0.60,
         '4.4oz/8pk Traditional PBY': 0.20,
     },
-    "Publix Supermarkets": {
-        '16oz/6pk CCW': 0.18,
-        '32oz/6pk CCW': 0.65,
-        '32oz/6pk Smoothie': 0.69,
+    "PUBLIX CORP - RMA": {
+        '16oz Core CCW': 0.18,
+        '32oz Core': 0.65,
+        '32oz/6pk Innovation': 0.69,
     },
     "Rainforest Distributing": {
         '10oz/12pk Original CCW': 0.24,
