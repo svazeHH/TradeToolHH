@@ -1109,6 +1109,41 @@ def main():
                 
                 st.markdown("---")
                 
+                # Trade Spend Breakdown Section
+                st.markdown("### 💰 Trade Spend Breakdown")
+                
+                breakdown_col1, breakdown_col2 = st.columns(2)
+                
+                with breakdown_col1:
+                    st.metric("Item-Level Trade Spend", f"${a['trade_spend']:,.0f}")
+                    st.caption("Promotional discounts and allowances")
+                    
+                    st.metric("Additional Fees", f"${a['flat_fee']:,.0f}")
+                    st.caption("Slotting, display, co-op advertising")
+                    
+                    if a['metrics']['edlp_spend'] > 0:
+                        st.metric("EDLP Spend", f"${a['metrics']['edlp_spend']:,.0f}")
+                        st.caption(f"Everyday discount: {a['promo_units']:,.0f} units sold")
+                
+                with breakdown_col2:
+                    total_investment = a['trade_spend'] + a['flat_fee'] + a['metrics']['edlp_spend']
+                    st.metric("**Total Trade Investment**", f"**${total_investment:,.0f}**")
+                    st.caption("Sum of all trade spend components")
+                    
+                    # Show percentage breakdown
+                    if total_investment > 0:
+                        st.markdown("**Breakdown:**")
+                        promo_pct = (a['trade_spend'] / total_investment * 100) if total_investment > 0 else 0
+                        fee_pct = (a['flat_fee'] / total_investment * 100) if total_investment > 0 else 0
+                        edlp_pct = (a['metrics']['edlp_spend'] / total_investment * 100) if total_investment > 0 else 0
+                        
+                        st.write(f"• Promo: {promo_pct:.1f}%")
+                        st.write(f"• Fees: {fee_pct:.1f}%")
+                        if a['metrics']['edlp_spend'] > 0:
+                            st.write(f"• EDLP: {edlp_pct:.1f}%")
+                
+                st.markdown("---")
+                
                 # Metrics section
                 col1, col2 = st.columns([1, 1])
                 
@@ -1136,11 +1171,6 @@ def main():
                     st.metric("Incremental Revenue", f"${a['metrics']['incremental_sales']:,.0f}")
                     st.metric("Incremental Profit", f"${a['metrics']['incremental_profit']:,.0f}")
                     st.caption(f"Based on {a['gross_margin_pct']:.0f}% gross margin")
-                    
-                    if a['metrics']['edlp_spend'] > 0:
-                        st.markdown("---")
-                        st.metric("EDLP Spend", f"${a['metrics']['edlp_spend']:,.0f}")
-                        st.caption("Included in total trade spend")
                 
                 st.markdown("---")
                 
