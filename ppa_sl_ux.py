@@ -601,40 +601,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Hardcoded P&L data by retailer and product group
-PL_DATA = {
-    ('Whole Foods', 'Coconut Water'): {'net_price': 4.50, 'cogs': 2.70},
-    ('Whole Foods', 'Smoothies'): {'net_price': 5.25, 'cogs': 3.15},
-    ('Target', 'Coconut Water'): {'net_price': 4.25, 'cogs': 2.55},
-    ('Target', 'Smoothies'): {'net_price': 4.99, 'cogs': 2.99},
-    ('Kroger', 'Coconut Water'): {'net_price': 4.00, 'cogs': 2.40},
-    ('Kroger', 'Smoothies'): {'net_price': 4.75, 'cogs': 2.85},
-    # Add more retailer-product combinations as needed
-}
-
-# Default P&L for retailers/products not in the lookup
-DEFAULT_PL = {'net_price': 4.50, 'cogs': 2.70}  # Represents company average
-
-def get_pl_data(retailer, product_groups):
-    """Get P&L data for retailer and product(s). Returns weighted average for multiple products."""
-    if isinstance(product_groups, str):
-        product_groups = [product_groups]
-    
-    net_prices = []
-    cogs_list = []
-    
-    for product in product_groups:
-        key = (retailer, product)
-        pl = PL_DATA.get(key, DEFAULT_PL)
-        net_prices.append(pl['net_price'])
-        cogs_list.append(pl['cogs'])
-    
-    # Return average if multiple products selected
-    avg_net_price = sum(net_prices) / len(net_prices)
-    avg_cogs = sum(cogs_list) / len(cogs_list)
-    
-    return avg_net_price, avg_cogs
-
 # Initialize session state
 if 'weekly_data' not in st.session_state:
     st.session_state.weekly_data = None
@@ -736,8 +702,8 @@ def get_edlp_rate(retailer, product_group):
             return EDLP_RATES[retailer][product_group]
     return 0.0
 
-def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee, pre_units, promo_units, post_units, net_price, cogs, edlp_spend):
-    """Calculate lift and ROI metrics using actual unit economics"""
+def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee, pre_units, promo_units, post_units, gross_margin_pct, edlp_spend):
+    """Calculate lift and ROI metrics"""
     total_trade_spend = trade_spend + flat_fee + edlp_spend
     
     # Lift calculations
@@ -746,16 +712,12 @@ def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee,
     during_lift_units = ((promo_units - pre_units) / pre_units * 100) if pre_units > 0 else 0
     post_lift_units = ((post_units - pre_units) / pre_units * 100) if pre_units > 0 else 0
     
-    # Unit economics
-    profit_per_unit = net_price - cogs
-    gross_margin_pct = ((net_price - cogs) / net_price * 100) if net_price > 0 else 0
-    
-    # Incremental profit calculation
-    incremental_units = promo_units - pre_units
-    incremental_profit = incremental_units * profit_per_unit
+    # Incremental calculations
     incremental_sales = promo_sales - pre_sales
+    incremental_units = promo_units - pre_units
+    incremental_profit = incremental_sales * (gross_margin_pct / 100)
     
-    # ROI = (Incremental Profit - Trade Spend) / Trade Spend
+    # ROI = (Incremental Profit - Total Trade Spend) / Total Trade Spend × 100
     roi = ((incremental_profit - total_trade_spend) / total_trade_spend * 100) if total_trade_spend > 0 else 0
     
     return {
@@ -766,7 +728,6 @@ def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee,
         'incremental_sales': incremental_sales,
         'incremental_units': incremental_units,
         'incremental_profit': incremental_profit,
-        'profit_per_unit': profit_per_unit,
         'gross_margin_pct': gross_margin_pct,
         'roi': roi,
         'edlp_spend': edlp_spend
@@ -880,14 +841,12 @@ def export_to_excel(analyses):
                 'During Incr Dollars': analysis['promo_sales'] - analysis['pre_sales'],
                 'Post-Promo Sales': analysis['post_sales'],
                 'Post Incr Dollars': analysis['post_sales'] - analysis['pre_sales'],
-                'Net Price': analysis['net_price'],
-                'COGS': analysis['cogs'],
                 'Gross Margin %': analysis['gross_margin_pct'],
                 'Incremental Profit': analysis['metrics']['incremental_profit'],
                 'EDLP Spend': analysis['metrics']['edlp_spend'],
                 'Trade Spend': analysis['trade_spend'],
                 'Flat Fee': analysis['flat_fee'],
-                'Total Spend': analysis['trade_spend'] + analysis['flat_fee'],
+                'Total Spend': analysis['trade_spend'] + analysis['flat_fee'] + analysis['metrics']['edlp_spend'],
                 'Expected Lift %': analysis['expected_lift'],
                 'Actual During Lift % ($)': analysis['metrics']['during_lift_dollars'],
                 'Actual During Lift % (Units)': analysis['metrics']['during_lift_units'],
@@ -946,10 +905,11 @@ def main():
             st.caption("Everyday low price discount rates applied per unit sold")
             
             if EDLP_RATES:
-                for retailer, products in EDLP_RATES.items():
+                for retailer, products in list(EDLP_RATES.items())[:5]:  # Show first 5
                     st.markdown(f"**{retailer}:**")
-                    for product, rate in products.items():
+                    for product, rate in list(products.items())[:3]:  # Show first 3 products
                         st.write(f"  • {product}: ${rate:.2f}/unit")
+                st.caption(f"...and {len(EDLP_RATES) - 5} more retailers configured")
             else:
                 st.info("No EDLP rates configured")
         
@@ -1028,7 +988,7 @@ def main():
                     "Item-Level Trade Spend ($)",
                     0.0,
                     step=100.0,
-                    help="Total promotional trade spend: discounts, off-invoice, scan-based allowances (EDLP rates auto-applied from sidebar config)"
+                    help="Total promotional trade spend: discounts, off-invoice, scan-based allowances (EDLP rates auto-applied from config)"
                 )
                 
                 # Show EDLP info if configured
@@ -1040,6 +1000,7 @@ def main():
                             edlp_info.append(f"{pg}: ${rate:.2f}/unit")
                     if edlp_info:
                         st.info(f"💡 **EDLP rates configured:**\n\n" + "\n\n".join(edlp_info) + "\n\n*Applied automatically to all units sold*")
+                
                 flat_fee = st.number_input(
                     "Additional Fees ($)",
                     0.0,
@@ -1082,7 +1043,10 @@ def main():
                         promo_sales, promo_units = get_period_sales(df, retailer, product_group, periods['promo_start'], periods['promo_end'], periods['promo_days'])
                         post_sales, post_units = get_period_sales(df, retailer, product_group, periods['post_start'], periods['post_end'], periods['promo_days'])
                         
-                        metrics = calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee, pre_units, promo_units, post_units, gross_margin_pct)
+                        # Calculate EDLP spend for promo period
+                        edlp_spend = calculate_edlp_spend(retailer, product_group, promo_units)
+                        
+                        metrics = calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee, pre_units, promo_units, post_units, gross_margin_pct, edlp_spend)
                         product_group_display = ', '.join(product_group) if isinstance(product_group, list) else product_group
                         
                         st.session_state.current_analysis = {
@@ -1171,7 +1135,7 @@ def main():
                     st.markdown("---")
                     st.metric("Incremental Revenue", f"${a['metrics']['incremental_sales']:,.0f}")
                     st.metric("Incremental Profit", f"${a['metrics']['incremental_profit']:,.0f}")
-                    st.caption(f"Based on ${a['net_price']:.2f} net price - ${a['cogs']:.2f} COGS")
+                    st.caption(f"Based on {a['gross_margin_pct']:.0f}% gross margin")
                     
                     if a['metrics']['edlp_spend'] > 0:
                         st.markdown("---")
@@ -1216,7 +1180,7 @@ def main():
                 
                 avg_lift = sum(a['metrics']['during_lift_dollars'] for a in st.session_state.promo_analyses) / len(st.session_state.promo_analyses)
                 avg_roi = sum(a['metrics']['roi'] for a in st.session_state.promo_analyses) / len(st.session_state.promo_analyses)
-                total_spend = sum(a['trade_spend'] + a['flat_fee'] for a in st.session_state.promo_analyses)
+                total_spend = sum(a['trade_spend'] + a['flat_fee'] + a['metrics']['edlp_spend'] for a in st.session_state.promo_analyses)
                 total_incremental = sum(a['metrics']['incremental_sales'] for a in st.session_state.promo_analyses)
                 
                 with col1:
@@ -1269,6 +1233,8 @@ def main():
                             st.write(f"Gross Margin: {a['gross_margin_pct']:.0f}%")
                             st.write(f"Expected Lift: {a['expected_lift']:.1f}%")
                             st.write(f"Expected ROI: {a['expected_roi']:.1f}%")
+                            if a['metrics']['edlp_spend'] > 0:
+                                st.write(f"EDLP Spend: ${a['metrics']['edlp_spend']:,.0f}")
                         with perf_col2:
                             st.write(f"Actual ROI: {a['metrics']['roi']:.1f}%")
                             st.write(f"Incremental Sales: ${a['metrics']['incremental_sales']:,.0f}")
