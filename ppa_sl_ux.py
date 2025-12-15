@@ -285,7 +285,7 @@ EDLP_RATES = {
     },
     "WALMART CORP - RMA": {
         '16oz/6pk CCW': 0.51,
-        '32oz/6pk CCW': 0.72,
+        '32oz Core': 0.72,
     },
     "Wegman's": {
         '10oz/6pk Smoothie': 0.36,
