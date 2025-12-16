@@ -86,8 +86,6 @@ EDLP_RATES = {
         '32oz Core': 0.52,
     },
     "PUBLIX CORP - RMA": {
-        '16oz Core': 0.18,
-        '16oz Innovation': 0.18,
         '32oz Core': 0.65,
         '32oz Innovation': 0.69,
     },
