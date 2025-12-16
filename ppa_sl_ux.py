@@ -21,11 +21,11 @@ from io import BytesIO
 EDLP_RATES = {
     "AC - ALBERTSONSCO ACME - RMA": {
         '10oz Core': 0.25,
-        '12oz/4pk CCW': 1.05,
+        '4pk Core': 1.05,
     },
     "AC - ALBERTSONSCO INTERMOUNTAIN DIV W/ SLC - RMA": {
         '16oz Core': 0.40,
-        '32oz/6pk CCW': 0.80,
+        '32oz Core': 0.80,
     },
     "AC - ALBERTSONSCO NORCAL DIV W/ HAWAII - RMA": {
         '10oz Core': 0.15,
@@ -47,7 +47,7 @@ EDLP_RATES = {
         '32oz Core': 0.32,
     },
     "AC - ALBERTSONSCO SOUTHERN DIV - RMA": {
-        '10oz/6pk Smoothie': 0.22,
+        '10oz Smoothie': 0.22,
         '16oz Core': 0.36,
         '16oz Innovation': 0.36,
         '32oz Core': 0.66,
@@ -57,10 +57,10 @@ EDLP_RATES = {
         '16oz Core': 0.36,
         '16oz Innovation': 0.36,
         '32oz Core': 0.70,
-        '32oz/6pk Smoothie': 0.70,
+        '32oz Innovation': 0.70,
     },
     "AD - AHOLD GIANT CARLISLE DIV - RMA": {
-        '24oz/6pk Traditional PBY': 0.62,
+        '24oz Core': 0.62,
     },
     "AD - DELHAIZE FOOD LION CORP - RMA": {
         '16oz Innovation': 0.17,
@@ -78,15 +78,15 @@ EDLP_RATES = {
     },
     "GELSONS MARKETS - TOTAL US": {
         '10oz Core': 0.06,
-        '10oz/6pk Smoothie': 0.03,
+        '10oz Smoothie': 0.03,
         '16oz Core': 0.11,
         '16oz Innovation': 0.11,
-        '24oz/6pk Traditional PBY': 0.06,
+        '24oz Core': 0.06,
         '32oz Core': 0.32,
-        '4.4oz/8pk Traditional PBY': 0.05,
+        '4.4oz Core': 0.05,
     },
     "KROGER CORP - RMA": {
-        '24oz/6pk Traditional PBY': 0.55,
+        '24oz Core': 0.55,
     },
     "MOTHERS MARKET - TOTAL US": {
         '16oz Core': 0.26,
@@ -96,10 +96,10 @@ EDLP_RATES = {
         '16oz Core': 0.18,
         '16oz Innovation': 0.18,
         '32oz Core': 0.65,
-        '32oz/6pk Innovation': 0.69,
+        '32oz Innovation': 0.69,
     },
     "RALEYS - TOTAL US": {
-        '24oz/6pk Traditional PBY': 0.45,
+        '24oz Core': 0.45,
     },
     "SOUTHEASTERN GROCERS CORP - RMA": {
         '16oz Core': 0.30,
@@ -108,11 +108,11 @@ EDLP_RATES = {
     },
     "SPROUTS FARMERS MARKET - TOTAL US W/O PL": {
         '10oz Core': 0.02,
-        '10oz/6pk Smoothie': 0.40,
+        '10oz Smoothie': 0.40,
         '16oz Innovation': 0.38,
-        '24oz/6pk Traditional PBY': 0.65,
+        '24oz Core': 0.65,
         '32oz Core': 0.06,
-        '4.4oz/8pk Traditional PBY': 0.01,
+        '4.4oz Core': 0.01,
     },
     "STATER BROS CORP - RMA": {
         '16oz Core': 0.35,
@@ -120,20 +120,20 @@ EDLP_RATES = {
         '32oz Core': 0.70,
     },
     "TARGET CORP W/ AK/HI - RMA": {
-        '12oz/4pk CCW': 0.47,
+        '4pk Core': 0.47,
     },
     "WAKEFERN CORP W/O PRICE RITE - RMA": {
         '10oz Core': 0.10,
-        '24oz/6pk Traditional PBY': 0.65,
+        '24oz Core': 0.65,
         '32oz Core': 0.36,
-        '4.4oz/8pk Traditional PBY': 0.12,
+        '4.4oz Core': 0.12,
     },
     "WALMART CORP - RMA": {
         '16oz Core': 0.51,
         '32oz Core': 0.72,
     },
     "WEGMANS CORP W/O NYC - RMA": {
-        '10oz/6pk Smoothie': 0.36,
+        '10oz Smoothie': 0.36,
         '16oz Core': 0.38,
         '16oz Innovation': 0.38,
         '32oz Core': 0.72,
