@@ -27,12 +27,6 @@ EDLP_RATES = {
         '16oz Core': 0.40,
         '32oz Core': 0.80,
     },
-    "AC - ALBERTSONSCO NORCAL DIV W/ HAWAII - RMA": {
-        '10oz Core': 0.15,
-        '16oz Core': 0.17,
-        '16oz Innovation': 0.17,
-        '32oz Core': 0.32,
-    },
     "AC - ALBERTSONSCO PORTLAND, OR DIV - RMA": {
         '16oz Core': 0.46,
     },
