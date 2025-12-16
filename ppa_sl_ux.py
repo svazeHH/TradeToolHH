@@ -19,133 +19,64 @@ from io import BytesIO
 # ============================================================================
 
 EDLP_RATES = {
-    "APP": {
-        '10oz/12pk Original CCW': 0.36,
-        '16oz/12pk CCW': 0.45,
-        '24oz/6pk Traditional PBY': 0.72,
-        '32oz/6pk CCW': 0.89,
-        '4.4oz/8pk Traditional PBY': 0.21,
-    },
-    "AWG": {
-        '16oz/6pk CCW': 0.46,
-    },
-    "Ahold - Food Lion": {
-        '16oz/6pk CCW': 0.17,
-        '32oz/6pk CCW': 0.52,
-    },
-    "Ahold - Giant Carlisle": {
-        '24oz/6pk Traditional PBY': 0.62,
-    },
-    "Alb/Sfy - IM": {
-        '16oz/12pk CCW': 0.40,
-        '32oz/6pk CCW': 0.80,
-    },
-    "Alb/Sfy - MA (Acme & Eastern)": {
+    "AC - ALBERTSONSCO ACME - RMA": {
         '10oz/12pk Original CCW': 0.25,
         '12oz/4pk CCW': 1.05,
     },
-    "Alb/Sfy - Portland": {
+    "AC - ALBERTSONSCO INTERMOUNTAIN DIV W/ SLC - RMA": {
+        '16oz/12pk CCW': 0.40,
+        '32oz/6pk CCW': 0.80,
+    },
+    "AC - ALBERTSONSCO NORCAL DIV W/ HAWAII - RMA": {
+        '10oz/12pk Original CCW': 0.15,
+        '16oz/12pk CCW': 0.17,
+        '16oz/6pk CCW': 0.17,
+        '32oz/6pk CCW': 0.32,
+    },
+    "AC - ALBERTSONSCO PORTLAND, OR DIV - RMA": {
         '16oz/12pk CCW': 0.46,
     },
-    "Alb/Sfy - SW": {
-        '16oz/12pk CCW': 0.35,
-        '32oz/6pk CCW': 0.70,
+    "AC - ALBERTSONSCO SHAWS DIV W/ STAR MARKET - RMA": {
+        '16oz/12pk CCW': 0.20,
+        '32oz/6pk CCW': 0.72,
     },
-    "Alb/Sfy - Seattle": {
+    "AC - ALBERTSONSCO SOUTHERN CALIFORNIA DIV - RMA": {
+        '10oz/12pk Original CCW': 0.15,
+        '16oz/12pk CCW': 0.17,
+        '16oz/6pk CCW': 0.17,
+        '32oz/6pk CCW': 0.32,
+    },
+    "AC - ALBERTSONSCO SOUTHERN DIV - RMA": {
+        '10oz/6pk Smoothie': 0.22,
+        '16oz/12pk CCW': 0.36,
+        '16oz/6pk CCW': 0.36,
+        '32oz/6pk CCW': 0.66,
+    },
+    "AC - ALBERTSONSCO MID-ATLANTIC DIV - RMA": {
         '10oz/12pk Original CCW': 0.22,
         '16oz/12pk CCW': 0.36,
         '16oz/6pk CCW': 0.36,
         '32oz/6pk CCW': 0.70,
         '32oz/6pk Smoothie': 0.70,
     },
-    "Alb/Sfy - Shaws": {
-        '16oz/12pk CCW': 0.20,
-        '32oz/6pk CCW': 0.72,
+    "AD - AHOLD GIANT CARLISLE DIV - RMA": {
+        '24oz/6pk Traditional PBY': 0.62,
     },
-    "Alb/Sfy - SoCal": {
-        '10oz/12pk Original CCW': 0.15,
-        '16oz/12pk CCW': 0.17,
+    "AD - DELHAIZE FOOD LION CORP - RMA": {
         '16oz/6pk CCW': 0.17,
-        '32oz/6pk CCW': 0.32,
+        '32oz/6pk CCW': 0.52,
     },
-    "Alb/Sfy - Southern": {
-        '10oz/6pk Smoothie': 0.22,
-        '16oz/12pk CCW': 0.36,
-        '16oz/6pk CCW': 0.36,
-        '32oz/6pk CCW': 0.66,
+    "ASSOCIATED WHOLESALE GROCERS CORP - SRMA": {
+        '16oz/6pk CCW': 0.46,
     },
-    "Alder": {
-        '16oz/12pk CCW': 0.80,
-        '32oz/6pk CCW': 1.60,
-    },
-    "Atlantic Beverage Distributors": {
-        '16oz/6pk CCW': 1.07,
-    },
-    "BJs Wholesale": {
-        '10oz/6pk CCW': 0.69,
-    },
-    "Big Y": {
+    "BIG Y - RMA": {
         '16oz/12pk CCW': 0.16,
         '32oz/6pk CCW': 0.32,
     },
-    "Catapult": {
-        '10oz/12pk Original CCW': 0.26,
-        '10oz/6pk Smoothie': 0.26,
-        '16oz/12pk CCW': 0.33,
-        '16oz/6pk CCW': 0.33,
-        '32oz/6pk CCW': 0.60,
+    "BJS CORP - RMA": {
+        '10oz/6pk CCW': 0.69,
     },
-    "Chevron ExtraMile": {
-        '16oz/12pk CCW': 0.21,
-        '16oz/6pk CCW': 0.21,
-    },
-    "Citarella": {
-        '16oz/12pk CCW': 0.22,
-        '32oz/6pk CCW': 0.45,
-    },
-    "Cub Foods": {
-        '16oz/12pk CCW': 0.10,
-        '16oz/6pk CCW': 0.10,
-        '32oz/6pk CCW': 1.21,
-    },
-    "DP Distribution East": {
-        '10oz/12pk Original CCW': 0.36,
-        '10oz/6pk Smoothie': 0.36,
-        '16oz/12pk CCW': 0.45,
-        '24oz/6pk Traditional PBY': 0.72,
-        '32oz/6pk CCW': 0.89,
-        '4.4oz/8pk Traditional PBY': 0.21,
-    },
-    "Demoulas": {
-        '16oz/12pk CCW': 0.39,
-        '32oz/6pk CCW': 0.86,
-    },
-    "Dot Foods, Inc.": {
-        '10oz/12pk Original CCW': 0.11,
-        '10oz/6pk Smoothie': 0.11,
-        '16oz/12pk CCW': 0.14,
-        '16oz/6pk CCW': 0.15,
-        '24oz/6pk Drinkable PBY': 0.18,
-        '24oz/6pk R&C PBY': 0.21,
-        '24oz/6pk Traditional PBY': 0.20,
-        '32oz/6pk CCW': 0.29,
-        '4.4oz/8pk Traditional PBY': 0.05,
-    },
-    "Earthly Gourmet": {
-        '24oz/6pk R&C PBY': 0.45,
-    },
-    "Fresh Direct": {
-        '10oz/12pk Original CCW': 0.10,
-        '10oz/6pk Smoothie': 0.12,
-        '12oz/6pk Original CCW': 0.29,
-        '16oz/12pk CCW': 0.18,
-        '16oz/6pk CCW': 0.18,
-        '24oz/6pk Traditional PBY': 0.42,
-        '32oz/6pk CCW': 0.36,
-        '4.4oz/8pk Traditional PBY': 0.12,
-        '8.75oz/12pk Original CCW': 0.90,
-    },
-    "Gelsons": {
+    "GELSONS MARKETS - TOTAL US": {
         '10oz/12pk Original CCW': 0.06,
         '10oz/6pk Smoothie': 0.03,
         '16oz/12pk CCW': 0.11,
@@ -154,48 +85,12 @@ EDLP_RATES = {
         '32oz/6pk CCW': 0.32,
         '4.4oz/8pk Traditional PBY': 0.05,
     },
-    "H Mart": {
-        '16oz/6pk CCW': 0.25,
-        '32oz/6pk CCW': 0.55,
+    "KROGER CORP - RMA": {
+        '24oz/6pk Traditional PBY': 0.55,
     },
-    "H-E-B": {
-        '16oz/12pk CCW': 0.35,
-        '16oz/6pk CCW': 0.35,
-        '32oz/6pk CCW': 0.82,
-    },
-    "Hungry Root": {
-        '12oz/6pk Original CCW': 0.35,
-        '16oz/12pk CCW': 0.61,
-        '24oz/6pk Traditional PBY': 0.50,
-        '4.4oz/8pk Traditional PBY': 0.15,
-    },
-    "L.A. Distributing Co.": {
-        '10oz/12pk Original CCW': 0.24,
-        '10oz/6pk Smoothie': 0.31,
-        '16oz/12pk CCW': 0.30,
-        '16oz/6pk CCW': 0.39,
-        '32oz/6pk CCW': 0.60,
-    },
-    "Misfits": {
-        '10oz/6pk Smoothie': 0.13,
-        '16oz/12pk CCW': 0.33,
-        '16oz/6pk CCW': 0.33,
-        '24oz/6pk Traditional PBY': 0.48,
-        '4.4oz/8pk Traditional PBY': 0.14,
-    },
-    "Morris Distributing": {
-        '10oz/12pk Original CCW': 0.29,
-        '10oz/6pk Smoothie': 0.29,
-        '12oz/6pk Original CCW': 0.26,
-        '16oz/6pk CCW': 0.37,
-    },
-    "Mother's Market": {
+    "MOTHERS MARKET - TOTAL US": {
         '16oz/12pk CCW': 0.26,
         '32oz/6pk CCW': 0.52,
-    },
-    "Nugget": {
-        '24oz/6pk Traditional PBY': 0.60,
-        '4.4oz/8pk Traditional PBY': 0.20,
     },
     "PUBLIX CORP - RMA": {
         '16oz Core': 0.18,
@@ -203,54 +98,15 @@ EDLP_RATES = {
         '32oz Core': 0.65,
         '32oz/6pk Innovation': 0.69,
     },
-    "Rainforest Distributing": {
-        '10oz/12pk Original CCW': 0.24,
-        '10oz/6pk Smoothie': 0.24,
-        '16oz/12pk CCW': 0.30,
-        '16oz/6pk CCW': 0.30,
-        '24oz/6pk Drinkable PBY': 0.48,
-        '24oz/6pk R&C PBY': 0.55,
-        '24oz/6pk Traditional PBY': 0.48,
-        '32oz/6pk CCW': 0.60,
-        '4.4oz/8pk R&C PBY': 0.17,
-        '4.4oz/8pk Traditional PBY': 0.14,
-    },
-    "Raley's": {
+    "RALEYS - TOTAL US": {
         '24oz/6pk Traditional PBY': 0.45,
     },
-    "Roche Brothers": {
-        '10oz/12pk Original CCW': 0.23,
-        '16oz/12pk CCW': 0.33,
-        '16oz/6pk CCW': 0.33,
-        '32oz/6pk CCW': 0.40,
-    },
-    "Seacoast Distribution": {
-        '10oz/12pk Original CCW': 0.31,
-        '10oz/6pk Smoothie': 0.31,
-        '12oz/4pk CCW': 1.16,
-        '16oz/12pk CCW': 0.38,
-        '16oz/6pk CCW': 0.39,
-        '24oz/6pk Drinkable PBY': 0.63,
-        '24oz/6pk Traditional PBY': 0.63,
-        '32oz/6pk CCW': 0.77,
-        '4.4oz/8pk Traditional PBY': 0.18,
-    },
-    "Set Sail International": {
-        '10oz/6pk Smoothie': 0.36,
-        '16oz/12pk CCW': 0.45,
-        '16oz/6pk CCW': 0.45,
-        '32oz/6pk CCW': 0.89,
-    },
-    "Smart & Final": {
-        '16oz/12pk CCW': 0.30,
-        '16oz/6pk CCW': 0.30,
-    },
-    "Southeastern Grocers": {
+    "SOUTHEASTERN GROCERS CORP - RMA": {
         '16oz/12pk CCW': 0.30,
         '16oz/6pk CCW': 0.30,
         '32oz/6pk CCW': 0.60,
     },
-    "Sprouts Farmers Market": {
+    "SPROUTS FARMERS MARKET - TOTAL US W/O PL": {
         '10oz/12pk Original CCW': 0.02,
         '10oz/6pk Smoothie': 0.40,
         '16oz/6pk CCW': 0.38,
@@ -258,27 +114,15 @@ EDLP_RATES = {
         '32oz/6pk CCW': 0.06,
         '4.4oz/8pk Traditional PBY': 0.01,
     },
-    "Stater Bros": {
+    "STATER BROS CORP - RMA": {
         '16oz/12pk CCW': 0.35,
         '16oz/6pk CCW': 0.35,
         '32oz/6pk CCW': 0.70,
     },
-    "Target Corp.": {
+    "TARGET CORP W/ AK/HI - RMA": {
         '12oz/4pk CCW': 0.47,
     },
-    "The Kroger Co": {
-        '24oz/6pk Traditional PBY': 0.55,
-    },
-    "Thrive Market": {
-        '16oz/12pk CCW': 0.47,
-        '16oz/6pk CCW': 0.47,
-        '24oz/6pk Traditional PBY': 0.76,
-        '32oz/6pk CCW': 0.95,
-    },
-    "WFM National": {
-        '24oz/6pk Drinkable PBY': 0.42,
-    },
-    "Wakefern": {
+    "WAKEFERN CORP W/O PRICE RITE - RMA": {
         '10oz/12pk Original CCW': 0.10,
         '24oz/6pk Traditional PBY': 0.65,
         '32oz/6pk CCW': 0.36,
@@ -288,19 +132,11 @@ EDLP_RATES = {
         '16oz/6pk CCW': 0.51,
         '32oz Core': 0.72,
     },
-    "Wegman's": {
+    "WEGMANS CORP W/O NYC - RMA": {
         '10oz/6pk Smoothie': 0.36,
         '16oz/12pk CCW': 0.38,
         '16oz/6pk CCW': 0.38,
         '32oz/6pk CCW': 0.72,
-    },
-    "Winco": {
-        '16oz/12pk CCW': 0.34,
-        '32oz/6pk CCW': 0.55,
-    },
-    "igourmet - Mountain Top": {
-        '24oz/6pk Traditional PBY': 2.18,
-        '4.4oz/8pk Traditional PBY': 0.50,
     },
 }
 # ============================================================================
@@ -707,11 +543,9 @@ def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee,
     """Calculate lift and ROI metrics"""
     total_trade_spend = trade_spend + flat_fee + edlp_spend
     
-    # Lift calculations
-    during_lift_dollars = ((promo_sales - pre_sales) / pre_sales * 100) if pre_sales > 0 else 0
-    post_lift_dollars = ((post_sales - pre_sales) / pre_sales * 100) if pre_sales > 0 else 0
-    during_lift_units = ((promo_units - pre_units) / pre_units * 100) if pre_units > 0 else 0
-    post_lift_units = ((post_units - pre_units) / pre_units * 100) if pre_units > 0 else 0
+    # Lift calculations - UNIT BASED
+    during_lift = ((promo_units - pre_units) / pre_units * 100) if pre_units > 0 else 0
+    post_lift = ((post_units - pre_units) / pre_units * 100) if pre_units > 0 else 0
     
     # Incremental calculations
     incremental_sales = promo_sales - pre_sales
@@ -722,10 +556,8 @@ def calculate_metrics(pre_sales, promo_sales, post_sales, trade_spend, flat_fee,
     roi = ((incremental_profit - total_trade_spend) / total_trade_spend * 100) if total_trade_spend > 0 else 0
     
     return {
-        'during_lift_dollars': during_lift_dollars,
-        'post_lift_dollars': post_lift_dollars,
-        'during_lift_units': during_lift_units,
-        'post_lift_units': post_lift_units,
+        'during_lift': during_lift,
+        'post_lift': post_lift,
         'incremental_sales': incremental_sales,
         'incremental_units': incremental_units,
         'incremental_profit': incremental_profit,
@@ -776,7 +608,7 @@ def create_performance_chart(pre_sales, promo_sales, post_sales):
     return fig
 
 def create_lift_gauge(actual_lift, expected_lift):
-    """Create modern gauge chart"""
+    """Create modern gauge chart for unit lift"""
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
         value=actual_lift,
@@ -786,7 +618,7 @@ def create_lift_gauge(actual_lift, expected_lift):
             'font': {'size': 18, 'family': 'Inter', 'weight': 600}
         },
         title={
-            'text': "Dollar Lift vs Expected",
+            'text': "Unit Lift vs Expected",
             'font': {'size': 18, 'color': '#2c3e50', 'family': 'Inter', 'weight': 600}
         },
         number={'font': {'size': 44, 'family': 'Inter', 'weight': 700}},
@@ -838,10 +670,15 @@ def export_to_excel(analyses):
                 'Promo End': analysis['periods']['promo_end'].strftime('%Y-%m-%d'),
                 'Promo Days': analysis['periods']['promo_days'],
                 'Pre-Promo Sales': analysis['pre_sales'],
+                'Pre-Promo Units': analysis['pre_units'],
                 'During Promo Sales': analysis['promo_sales'],
+                'During Promo Units': analysis['promo_units'],
                 'During Incr Dollars': analysis['promo_sales'] - analysis['pre_sales'],
+                'During Incr Units': analysis['promo_units'] - analysis['pre_units'],
                 'Post-Promo Sales': analysis['post_sales'],
+                'Post-Promo Units': analysis['post_units'],
                 'Post Incr Dollars': analysis['post_sales'] - analysis['pre_sales'],
+                'Post Incr Units': analysis['post_units'] - analysis['pre_units'],
                 'Gross Margin %': analysis['gross_margin_pct'],
                 'Incremental Profit': analysis['metrics']['incremental_profit'],
                 'EDLP Spend': analysis['metrics']['edlp_spend'],
@@ -849,10 +686,8 @@ def export_to_excel(analyses):
                 'Flat Fee': analysis['flat_fee'],
                 'Total Spend': analysis['trade_spend'] + analysis['flat_fee'] + analysis['metrics']['edlp_spend'],
                 'Expected Lift %': analysis['expected_lift'],
-                'Actual During Lift % ($)': analysis['metrics']['during_lift_dollars'],
-                'Actual During Lift % (Units)': analysis['metrics']['during_lift_units'],
-                'Actual Post Lift % ($)': analysis['metrics']['post_lift_dollars'],
-                'Actual Post Lift % (Units)': analysis['metrics']['post_lift_units'],
+                'Actual During Lift %': analysis['metrics']['during_lift'],
+                'Actual Post Lift %': analysis['metrics']['post_lift'],
                 'Expected ROI %': analysis['expected_roi'],
                 'Actual ROI %': analysis['metrics']['roi'],
                 'Incremental Sales': analysis['metrics']['incremental_sales'],
@@ -1150,17 +985,14 @@ def main():
                 
                 with col1:
                     st.markdown("### 📈 Lift Analysis")
-                    st.markdown("**Dollar Lift**")
-                    during_diff = a['metrics']['during_lift_dollars'] - a['expected_lift']
-                    st.metric("During Promo", f"{a['metrics']['during_lift_dollars']:.1f}%", f"{during_diff:+.1f}%")
-                    st.metric("Post Promo", f"{a['metrics']['post_lift_dollars']:.1f}%")
-                    
-                    st.markdown("**Unit Lift**")
-                    st.metric("During Promo", f"{a['metrics']['during_lift_units']:.1f}%")
-                    st.metric("Post Promo", f"{a['metrics']['post_lift_units']:.1f}%")
+                    during_diff = a['metrics']['during_lift'] - a['expected_lift']
+                    st.metric("During Promo", f"{a['metrics']['during_lift']:.1f}%", f"{during_diff:+.1f}%")
+                    st.metric("Post Promo", f"{a['metrics']['post_lift']:.1f}%")
                     
                     st.markdown("---")
                     st.metric("Expected Lift", f"{a['expected_lift']:.1f}%")
+                    st.metric("Incremental Units", f"{a['metrics']['incremental_units']:,.0f}")
+                    st.caption("Units above baseline during promo")
                 
                 with col2:
                     st.markdown("### 💵 Financial Performance")
@@ -1180,7 +1012,7 @@ def main():
                 with col1:
                     st.plotly_chart(create_performance_chart(a['pre_sales'], a['promo_sales'], a['post_sales']), use_container_width=True)
                 with col2:
-                    st.plotly_chart(create_lift_gauge(a['metrics']['during_lift_dollars'], a['expected_lift']), use_container_width=True)
+                    st.plotly_chart(create_lift_gauge(a['metrics']['during_lift'], a['expected_lift']), use_container_width=True)
                 
                 st.markdown("---")
                 
@@ -1209,7 +1041,7 @@ def main():
                 # Summary metrics
                 col1, col2, col3, col4 = st.columns(4)
                 
-                avg_lift = sum(a['metrics']['during_lift_dollars'] for a in st.session_state.promo_analyses) / len(st.session_state.promo_analyses)
+                avg_lift = sum(a['metrics']['during_lift'] for a in st.session_state.promo_analyses) / len(st.session_state.promo_analyses)
                 avg_roi = sum(a['metrics']['roi'] for a in st.session_state.promo_analyses) / len(st.session_state.promo_analyses)
                 total_spend = sum(a['trade_spend'] + a['flat_fee'] + a['metrics']['edlp_spend'] for a in st.session_state.promo_analyses)
                 total_incremental = sum(a['metrics']['incremental_sales'] for a in st.session_state.promo_analyses)
@@ -1246,16 +1078,14 @@ def main():
                             st.write(f"Sales: ${a['promo_sales']:,.0f}")
                             st.caption(f"Incremental: ${a['promo_sales'] - a['pre_sales']:,.0f}")
                             st.write(f"Units: {a['promo_units']:,.0f}")
-                            st.write(f"Lift ($): {a['metrics']['during_lift_dollars']:.1f}%")
-                            st.write(f"Lift (Units): {a['metrics']['during_lift_units']:.1f}%")
+                            st.write(f"Lift: {a['metrics']['during_lift']:.1f}%")
                         
                         with col3:
                             st.markdown("**Post-Promo**")
                             st.write(f"Sales: ${a['post_sales']:,.0f}")
                             st.caption(f"Incremental: ${a['post_sales'] - a['pre_sales']:,.0f}")
                             st.write(f"Units: {a['post_units']:,.0f}")
-                            st.write(f"Lift ($): {a['metrics']['post_lift_dollars']:.1f}%")
-                            st.write(f"Lift (Units): {a['metrics']['post_lift_units']:.1f}%")
+                            st.write(f"Lift: {a['metrics']['post_lift']:.1f}%")
                         
                         st.markdown("---")
                         st.markdown("**Financial Performance**")
