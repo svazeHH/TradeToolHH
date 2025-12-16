@@ -17,7 +17,6 @@ from io import BytesIO
 #
 # Rates are automatically applied to all units sold during promo period
 # ============================================================================
-
 EDLP_RATES = {
     "AC - ALBERTSONSCO ACME - RMA": {
         '10oz Core': 0.25,
@@ -133,6 +132,7 @@ EDLP_RATES = {
         '32oz Core': 0.72,
     },
 }
+
 # ============================================================================
 
 # Page configuration
@@ -979,14 +979,23 @@ def main():
                 
                 with col1:
                     st.markdown("### 📈 Lift Analysis")
+                    
+                    st.markdown("**Unit Lift**")
                     during_diff = a['metrics']['during_lift'] - a['expected_lift']
                     st.metric("During Promo", f"{a['metrics']['during_lift']:.1f}%", f"{during_diff:+.1f}%")
                     st.metric("Post Promo", f"{a['metrics']['post_lift']:.1f}%")
                     
                     st.markdown("---")
+                    
+                    st.markdown("**Dollar Lift**")
+                    dollar_during_lift = ((a['promo_sales'] - a['pre_sales']) / a['pre_sales'] * 100) if a['pre_sales'] > 0 else 0
+                    dollar_post_lift = ((a['post_sales'] - a['pre_sales']) / a['pre_sales'] * 100) if a['pre_sales'] > 0 else 0
+                    st.metric("During Promo", f"{dollar_during_lift:.1f}%")
+                    st.metric("Post Promo", f"{dollar_post_lift:.1f}%")
+                    
+                    st.markdown("---")
                     st.metric("Expected Lift", f"{a['expected_lift']:.1f}%")
-                    st.metric("Incremental Units", f"{a['metrics']['incremental_units']:,.0f}")
-                    st.caption("Units above baseline during promo")
+                    st.caption("Unit-based expectation")
                 
                 with col2:
                     st.markdown("### 💵 Financial Performance")
